@@ -3,8 +3,9 @@
 Mise à disposition d'une API pour le front-end du projet. 
 Réalisé sous Symfony avec API Plateform
 
-projet front : https://github.com/LouisonDupont/projectil-sogepress_front
-documentation : https://github.com/LouisonDupont/projectil-sogepress_doc
+Autres dépôts du projet :
+- projet front : https://github.com/LouisonDupont/projectil-sogepress_front
+- documentation : https://github.com/LouisonDupont/projectil-sogepress_doc
 
 ## Installation
 
