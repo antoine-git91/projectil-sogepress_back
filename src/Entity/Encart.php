@@ -18,16 +18,6 @@ class Encart
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $emplacement;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $format;
-
-    /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="encart", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -39,33 +29,21 @@ class Encart
      */
     private $support_magazine;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=EmplacementMagazine::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $emplacement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=FormatEncart::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $format;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmplacement(): ?bool
-    {
-        return $this->emplacement;
-    }
-
-    public function setEmplacement(bool $emplacement): self
-    {
-        $this->emplacement = $emplacement;
-
-        return $this;
-    }
-
-    public function getFormat(): ?bool
-    {
-        return $this->format;
-    }
-
-    public function setFormat(bool $format): self
-    {
-        $this->format = $format;
-
-        return $this;
     }
 
     public function getCommande(): ?Commande
@@ -88,6 +66,30 @@ class Encart
     public function setSupportMagazine(?SupportMagazine $support_magazine): self
     {
         $this->support_magazine = $support_magazine;
+
+        return $this;
+    }
+
+    public function getEmplacement(): ?EmplacementMagazine
+    {
+        return $this->emplacement;
+    }
+
+    public function setEmplacement(?EmplacementMagazine $emplacement): self
+    {
+        $this->emplacement = $emplacement;
+
+        return $this;
+    }
+
+    public function getFormat(): ?FormatEncart
+    {
+        return $this->format;
+    }
+
+    public function setFormat(?FormatEncart $format): self
+    {
+        $this->format = $format;
 
         return $this;
     }

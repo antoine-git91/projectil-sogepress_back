@@ -18,16 +18,6 @@ class SupportWeb
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $type_prestation;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $type_site;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $url;
@@ -43,33 +33,21 @@ class SupportWeb
      */
     private $commande;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypePrestationWeb::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type_prestation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeSiteWeb::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type_site;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTypePrestation(): ?bool
-    {
-        return $this->type_prestation;
-    }
-
-    public function setTypePrestation(bool $type_prestation): self
-    {
-        $this->type_prestation = $type_prestation;
-
-        return $this;
-    }
-
-    public function getTypeSite(): ?bool
-    {
-        return $this->type_site;
-    }
-
-    public function setTypeSite(?bool $type_site): self
-    {
-        $this->type_site = $type_site;
-
-        return $this;
     }
 
     public function getUrl(): ?string
@@ -104,6 +82,30 @@ class SupportWeb
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getTypePrestation(): ?TypePrestationWeb
+    {
+        return $this->type_prestation;
+    }
+
+    public function setTypePrestation(?TypePrestationWeb $type_prestation): self
+    {
+        $this->type_prestation = $type_prestation;
+
+        return $this;
+    }
+
+    public function getTypeSite(): ?TypeSiteWeb
+    {
+        return $this->type_site;
+    }
+
+    public function setTypeSite(?TypeSiteWeb $type_site): self
+    {
+        $this->type_site = $type_site;
 
         return $this;
     }

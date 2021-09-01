@@ -27,15 +27,11 @@ class Adresse
      */
     private $type_voie;
 
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $nom_voie;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $type_adresse;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
@@ -48,6 +44,11 @@ class Adresse
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $statut_adresse;
 
     public function getId(): ?int
     {
@@ -90,18 +91,6 @@ class Adresse
         return $this;
     }
 
-    public function getTypeAdresse(): ?bool
-    {
-        return $this->type_adresse;
-    }
-
-    public function setTypeAdresse(bool $type_adresse): self
-    {
-        $this->type_adresse = $type_adresse;
-
-        return $this;
-    }
-
     public function getVille(): ?Ville
     {
         return $this->ville;
@@ -122,6 +111,18 @@ class Adresse
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getStatutAdresse(): ?bool
+    {
+        return $this->statut_adresse;
+    }
+
+    public function setStatutAdresse(bool $statut_adresse): self
+    {
+        $this->statut_adresse = $statut_adresse;
 
         return $this;
     }

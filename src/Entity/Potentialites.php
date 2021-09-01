@@ -41,7 +41,8 @@ class Potentialites
     private $magazine;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity=TypePotentialite::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $type_potentialite;
 
@@ -98,12 +99,12 @@ class Potentialites
         return $this;
     }
 
-    public function getTypePotentialite(): ?bool
+    public function getTypePotentialite(): ?TypePotentialite
     {
         return $this->type_potentialite;
     }
 
-    public function setTypePotentialite(bool $type_potentialite): self
+    public function setTypePotentialite(?TypePotentialite $type_potentialite): self
     {
         $this->type_potentialite = $type_potentialite;
 

@@ -22,11 +22,6 @@ class Commande
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $statut;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $facturation;
@@ -113,6 +108,12 @@ class Commande
      */
     private $supportMagazine;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CommandeStatus::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $statut;
+
     public function __construct()
     {
         $this->contact = new ArrayCollection();
@@ -123,18 +124,6 @@ class Commande
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getStatut(): ?bool
-    {
-        return $this->statut;
-    }
-
-    public function setStatut(bool $statut): self
-    {
-        $this->statut = $statut;
-
-        return $this;
     }
 
     public function getFacturation(): ?int
@@ -415,6 +404,18 @@ class Commande
         }
 
         $this->supportMagazine = $supportMagazine;
+
+        return $this;
+    }
+
+    public function getStatut(): ?CommandeStatus
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?CommandeStatus $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }

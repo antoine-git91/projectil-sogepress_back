@@ -20,11 +20,6 @@ class HistoriqueClient
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $type_commentaire;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $commentaire;
@@ -57,21 +52,15 @@ class HistoriqueClient
      */
     private $commande;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeHistorique::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type_historique;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTypeCommentaire(): ?bool
-    {
-        return $this->type_commentaire;
-    }
-
-    public function setTypeCommentaire(bool $type_commentaire): self
-    {
-        $this->type_commentaire = $type_commentaire;
-
-        return $this;
     }
 
     public function getCommentaire(): ?string
@@ -142,6 +131,18 @@ class HistoriqueClient
     public function setCommande(?Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getTypeHistorique(): ?TypeHistorique
+    {
+        return $this->type_historique;
+    }
+
+    public function setTypeHistorique(?TypeHistorique $type_historique): self
+    {
+        $this->type_historique = $type_historique;
 
         return $this;
     }

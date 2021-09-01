@@ -18,11 +18,6 @@ class SupportPrint
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $type_print;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $quantite;
@@ -33,21 +28,15 @@ class SupportPrint
      */
     private $commande;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypePrint::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type_print;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTypePrint(): ?bool
-    {
-        return $this->type_print;
-    }
-
-    public function setTypePrint(bool $type_print): self
-    {
-        $this->type_print = $type_print;
-
-        return $this;
     }
 
     public function getQuantite(): ?int
@@ -70,6 +59,18 @@ class SupportPrint
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getTypePrint(): ?TypePrint
+    {
+        return $this->type_print;
+    }
+
+    public function setTypePrint(?TypePrint $type_print): self
+    {
+        $this->type_print = $type_print;
 
         return $this;
     }

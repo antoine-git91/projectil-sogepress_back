@@ -20,11 +20,6 @@ class SupportMagazine
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $format;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $pages;
@@ -69,18 +64,6 @@ class SupportMagazine
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFormat(): ?bool
-    {
-        return $this->format;
-    }
-
-    public function setFormat(bool $format): self
-    {
-        $this->format = $format;
-
-        return $this;
     }
 
     public function getPages(): ?int

@@ -18,11 +18,6 @@ class CommunityManagement
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $reseau_social;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $post_mensuel;
@@ -33,21 +28,15 @@ class CommunityManagement
      */
     private $commande;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ReseauSocial::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $reseau_social;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getReseauSocial(): ?bool
-    {
-        return $this->reseau_social;
-    }
-
-    public function setReseauSocial(bool $reseau_social): self
-    {
-        $this->reseau_social = $reseau_social;
-
-        return $this;
     }
 
     public function getPostMensuel(): ?int
@@ -70,6 +59,18 @@ class CommunityManagement
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getReseauSocial(): ?ReseauSocial
+    {
+        return $this->reseau_social;
+    }
+
+    public function setReseauSocial(?ReseauSocial $reseau_social): self
+    {
+        $this->reseau_social = $reseau_social;
 
         return $this;
     }
