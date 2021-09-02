@@ -91,6 +91,12 @@ class Client
      */
     private $magazine;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=NafSousClasses::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $naf_sous_classe;
+
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
@@ -198,22 +204,22 @@ class Client
         return $this->adresses;
     }
 
-    public function addAdress(Adresse $adress): self
+    public function addAdresse(Adresse $adresse): self
     {
-        if (!$this->adresses->contains($adress)) {
-            $this->adresses[] = $adress;
-            $adress->setClient($this);
+        if (!$this->adresses->contains($adresse)) {
+            $this->adresses[] = $adresse;
+            $adresse->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeAdress(Adresse $adress): self
+    public function removeAdresse(Adresse $adresse): self
     {
-        if ($this->adresses->removeElement($adress)) {
+        if ($this->adresses->removeElement($adresse)) {
             // set the owning side to null (unless already changed)
-            if ($adress->getClient() === $this) {
-                $adress->setClient(null);
+            if ($adresse->getClient() === $this) {
+                $adresse->setClient(null);
             }
         }
 
@@ -383,6 +389,18 @@ class Client
         }
 
         $this->magazine = $magazine;
+
+        return $this;
+    }
+
+    public function getNafSousClasse(): ?NafSousClasses
+    {
+        return $this->naf_sous_classe;
+    }
+
+    public function setNafSousClasse(?NafSousClasses $naf_sous_classe): self
+    {
+        $this->naf_sous_classe = $naf_sous_classe;
 
         return $this;
     }
