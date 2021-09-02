@@ -28,6 +28,11 @@ class NafSousClasses
      */
     private $naf_classe;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $code;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class NafSousClasses
     public function setNafClasse(?NafClasses $naf_classe): self
     {
         $this->naf_classe = $naf_classe;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

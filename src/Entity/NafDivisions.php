@@ -35,6 +35,11 @@ class NafDivisions
      */
     private $naf_sections;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->nafGroupes = new ArrayCollection();
@@ -95,6 +100,18 @@ class NafDivisions
     public function setNafSections(?NafSections $naf_sections): self
     {
         $this->naf_sections = $naf_sections;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }
