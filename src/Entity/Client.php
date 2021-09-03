@@ -67,7 +67,7 @@ class Client
     private $contacts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Potentialites::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="client")
      */
     private $potentialites;
 
@@ -257,14 +257,14 @@ class Client
     }
 
     /**
-     * @return Collection|Potentialites[]
+     * @return Collection|Potentialite[]
      */
     public function getPotentialites(): Collection
     {
         return $this->potentialites;
     }
 
-    public function addPotentialite(Potentialites $potentialite): self
+    public function addPotentialite(Potentialite $potentialite): self
     {
         if (!$this->potentialites->contains($potentialite)) {
             $this->potentialites[] = $potentialite;
@@ -274,7 +274,7 @@ class Client
         return $this;
     }
 
-    public function removePotentialite(Potentialites $potentialite): self
+    public function removePotentialite(Potentialite $potentialite): self
     {
         if ($this->potentialites->removeElement($potentialite)) {
             // set the owning side to null (unless already changed)

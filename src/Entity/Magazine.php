@@ -38,7 +38,7 @@ class Magazine
     private $supportMagazine;
 
     /**
-     * @ORM\OneToMany(targetEntity=Potentialites::class, mappedBy="magazine")
+     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine")
      */
     private $potentialites;
 
@@ -89,14 +89,14 @@ class Magazine
     }
 
     /**
-     * @return Collection|Potentialites[]
+     * @return Collection|Potentialite[]
      */
     public function getPotentialites(): Collection
     {
         return $this->potentialites;
     }
 
-    public function addPotentialite(Potentialites $potentialite): self
+    public function addPotentialite(Potentialite $potentialite): self
     {
         if (!$this->potentialites->contains($potentialite)) {
             $this->potentialites[] = $potentialite;
@@ -106,7 +106,7 @@ class Magazine
         return $this;
     }
 
-    public function removePotentialite(Potentialites $potentialite): self
+    public function removePotentialite(Potentialite $potentialite): self
     {
         if ($this->potentialites->removeElement($potentialite)) {
             // set the owning side to null (unless already changed)

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=PotentialitesRepository::class)
  */
-class Potentialites
+class Potentialite
 {
     /**
      * @ORM\Id
@@ -18,11 +18,6 @@ class Potentialites
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $valeur;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -49,18 +44,6 @@ class Potentialites
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getValeur(): ?bool
-    {
-        return $this->valeur;
-    }
-
-    public function setValeur(bool $valeur): self
-    {
-        $this->valeur = $valeur;
-
-        return $this;
     }
 
     public function getCommentaire(): ?string
