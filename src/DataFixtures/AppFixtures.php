@@ -46,161 +46,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
 
-        // USER
-        $test_user = new User();
-        $test_user->setNom('Projectil');
-        $test_user->setPrenom('Sogepress');
-        $test_user->setEmail('test@test.com');
-        $test_user->setPassword('vErySecure_1234');
-        $test_user->setRoles(['ROLE_COMMERCIAL']);
-        $test_user->setCreatedAt(new DateTimeImmutable('now'));
-        $manager->persist($test_user);
-
-        // STATUS COMMANDE
-        $commande_status = new CommandeStatus();
-        $commande_status->setLibelle('test');
-        $manager->persist($commande_status);
-
-        // TypePrestationWeb
-        $types_presta_web = [];
-
-        $typePresta = new TypePrestationWeb();
-        $typePresta->setLibelle('Site Internet');
-        $manager->persist($typePresta);
-        $types_presta_web[] = $typePresta;
-
-        $typePresta = new TypePrestationWeb();
-        $typePresta->setLibelle('Maintenance');
-        $manager->persist($typePresta);
-        $types_presta_web[] = $typePresta;
-
-        $typePresta = new TypePrestationWeb();
-        $typePresta->setLibelle('Hebergement');
-        $manager->persist($typePresta);
-        $types_presta_web[] = $typePresta;
-
-        // TypeSiteWeb
-        $types_sites = [];
-
-        $typeSite = new TypeSiteWeb();
-        $typeSite->setLibelle('E-Commerce');
-        $manager->persist($typeSite);
-        $types_sites[] = $typeSite;
-
-        $typeSite = new TypeSiteWeb();
-        $typeSite->setLibelle('Vitrine');
-        $manager->persist($typeSite);
-        $types_sites[] = $typeSite;
-
-        // ReseauSocial
-        $reseaux = [];
-
-        $reseauSocial = new ReseauSocial();
-        $reseauSocial->setLibelle('Facebook');
-        $manager->persist($reseauSocial);
-        $reseaux[] = $reseauSocial;
-
-        $reseauSocial = new ReseauSocial();
-        $reseauSocial->setLibelle('Twitter');
-        $manager->persist($reseauSocial);
-        $reseaux[] = $reseauSocial;
-
-        $reseauSocial = new ReseauSocial();
-        $reseauSocial->setLibelle('Instagram');
-        $manager->persist($reseauSocial);
-        $reseaux[] = $reseauSocial;
-
-        // EmplacementMagazine
-        $emplacements_mag = [];
-
-        $emplacementMag = new EmplacementMagazine();
-        $emplacementMag->setLibelle('Premiere Couverture');
-        $manager->persist($emplacementMag);
-        $emplacements_mag[] = $emplacementMag;
-
-        $emplacementMag = new EmplacementMagazine();
-        $emplacementMag->setLibelle('Deuxieme Couverture');
-        $manager->persist($emplacementMag);
-        $emplacements_mag[] = $emplacementMag;
-
-        $emplacementMag = new EmplacementMagazine();
-        $emplacementMag->setLibelle('Troisieme Couverture');
-        $manager->persist($emplacementMag);
-        $emplacements_mag[] = $emplacementMag;
-
-        $emplacementMag = new EmplacementMagazine();
-        $emplacementMag->setLibelle('Quatrieme Couverture');
-        $manager->persist($emplacementMag);
-        $emplacements_mag[] = $emplacementMag;
-
-        $emplacementMag = new EmplacementMagazine();
-        $emplacementMag->setLibelle('Page interieur');
-        $manager->persist($emplacementMag);
-        $emplacements_mag[] = $emplacementMag;
-
-        // FormatEncart
-        $formats_encart = [];
-
-        $formatEncart = new FormatEncart();
-        $formatEncart->setLibelle('1/8');
-        $manager->persist($formatEncart);
-        $formats_encart[] = $formatEncart;
-
-        $formatEncart = new FormatEncart();
-        $formatEncart->setLibelle('1/4');
-        $manager->persist($formatEncart);
-        $formats_encart[] = $formatEncart;
-
-        $formatEncart = new FormatEncart();
-        $formatEncart->setLibelle('1/2');
-        $manager->persist($formatEncart);
-        $formats_encart[] = $formatEncart;
-
-        $formatEncart = new FormatEncart();
-        $formatEncart->setLibelle('Pleine page');
-        $manager->persist($formatEncart);
-        $formats_encart[] = $formatEncart;
-
-        // TYPES POTENTIALITES
-        $types_potentialites = [];
-
-        $typePotentialite = new TypePotentialite();
-        $typePotentialite->setLibelle('Web');
-        $manager->persist($typePotentialite);
-        $types_potentialites[] = $typePotentialite;
-
-        $typePotentialite = new TypePotentialite();
-        $typePotentialite->setLibelle('Print');
-        $manager->persist($typePotentialite);
-        $types_potentialites[] = $typePotentialite;
-
-        $typePotentialite = new TypePotentialite();
-        $typePotentialite->setLibelle('Régie');
-        $manager->persist($typePotentialite);
-        $types_potentialites[] = $typePotentialite;
-
-        $typePotentialite = new TypePotentialite();
-        $typePotentialite->setLibelle('Contenu');
-        $manager->persist($typePotentialite);
-        $types_potentialites[] = $typePotentialite;
-
-        $typePotentialite = new TypePotentialite();
-        $typePotentialite->setLibelle('Community Management');
-        $manager->persist($typePotentialite);
-        $types_potentialites[] = $typePotentialite;
-
-        // TYPE HISTORIQUE
-
-        $typeHistorique = new TypeHistorique();
-        $typeHistorique->setLibelle('Commande');
-        $manager->persist($typeHistorique);
-
-        $typeHistorique = new TypeHistorique();
-        $typeHistorique->setLibelle('Client');
-        $manager->persist($typeHistorique);
-
-        $manager->flush();
-
         // CLIENTS
         $clients = [];
 
@@ -361,13 +206,14 @@ class AppFixtures extends Fixture
         // MAGAZINES
         $magazines = [];
 
-        for ($i = 1; $i <= 5; $i++) {
+        foreach ($clients as $client) {
             $magazine = new Magazine();
             $magazine->setNom('Magazine_'.$i);
-            $magazine->setClient($clients[mt_rand(0, sizeof($clients) -1)]);
+            $magazine->setClient($client);
             $magazines[] = $magazine;
             $manager->persist($magazine);
         }
+
         $manager->flush();
 
         // PRODUITS
@@ -377,7 +223,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 5; $i++) {
             $produit = new SupportMagazine();
             $produit->setCommande($commandes[$commande_counter]);
-            $produit->addMagazine($magazines[$i]);
+            $produit->addMagazine($magazines[mt_rand(0, sizeof($magazines) -1)]);
             $produit->setEdition('Septembre 2021');
             $produit->setPages(mt_rand(10, 50));
             $produit->setQuantite(mt_rand(100, 5000));
@@ -413,7 +259,7 @@ class AppFixtures extends Fixture
             $manager->persist($produit);
             $commande_counter++;
         }
-
+        var_dump($commandes);
         $contenu = new Contenu();
         $produit->setCommande($commandes[$commande_counter]);
         $contenu->setTypeContenu(mt_rand(0, 1)); // Web ou Print
@@ -431,7 +277,7 @@ class AppFixtures extends Fixture
 
         // POTENTIALITES
 
-        for ($i = 0; i < 6; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             $potentialite = new Potentialite();
             $potentialite->setClient($clients[mt_rand(0, sizeof($clients) - 1)]);
             $potentialite->setTypePotentialite($types_potentialites[mt_rand(0, sizeof($types_potentialites) - 10)]);
@@ -441,31 +287,54 @@ class AppFixtures extends Fixture
         }
 
         // HISTORIQUE CLIENT
+        $historiques = [];
 
-        $historiqueClient = new HistoriqueClient();
-        $historiqueClient->setCommentaire('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
-        $historiqueClient->setCreatedAt(new DateTimeImmutable);
-        $historiqueClient->setClient();
-        $historiqueClient->setContact();
-        $historiqueClient->setUser($manager->getRepository(User::class)->find('1'));
-        $historiqueClient->setCommande();
-        $historiqueClient->setTypeHistorique($manager->getRepository(TypeHistorique::class)->find('1'));
-        $manager->persist($historiqueClient);
+        foreach ($commandes as $key => $commande) {
+            $historiqueClient = new HistoriqueClient();
+            $historiqueClient->setClient($commande->getClient());
+            $historiqueClient->setTypeHistorique($manager->getRepository(TypeHistorique::class)->findOneByLibelle('Commande'));
+            $historiqueClient->setCommande($commande);
+            $historiqueClient->setCommentaire('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
+            $historiqueClient->setContact($contacts[mt_rand(0, sizeof($contacts) -1)]);
+            $historiqueClient->setCreatedAt(new DateTimeImmutable);
+            $historiqueClient->setUser($test_user);
+            $manager->persist($historiqueClient);
+            $historiques[] = $historiqueClient;
+        }
+        foreach ($clients as $client) {
+            $historiqueClient = new HistoriqueClient();
+            $historiqueClient->setClient($client);
+            $historiqueClient->setTypeHistorique($manager->getRepository(TypeHistorique::class)->findOneByLibelle('Client'));
+            $historiqueClient->setCommentaire('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
+            $historiqueClient->setContact($contacts[mt_rand(0, sizeof($contacts) -1)]);
+            $historiqueClient->setCreatedAt(new DateTimeImmutable);
+            $historiqueClient->setUser($test_user);
+            $manager->persist($historiqueClient);
+            $historiques[] = $historiqueClient;
+        }
+
 
         // RELANCES
+        $relances = [];
 
-        $relance = new Relance();
-        $relance->setTypeRelance('OUI'); // Oui=Commande Non=Prospec
-        $relance->setObjet('Lorem ipsum dolor sit amet');
-        $relance->setContenu('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
-        $relance->setDateEcheance();
-        $relance->setStatut('OUI'); // Oui=En cours  Non=Archivé
-        $relance->setClient();
-        $relance->setCommande();
-        $relance->setCreatedAt();
-        $manager->persist($relance);
+        for ($i = 0; $i < 10; $i++) {
+            $relance = new Relance();
+            $relance->setClient($clients[mt_rand(0, sizeof($clients), 1)]);
+            if ($i % 2 == 0) {
+                $relance->setTypeRelance(1); // true=Commande
+                $relance->setCommande($commandes[mt_rand(0, sizeof($commandes), 1)]);
+            } else {
+                $relance->setTypeRelance(0); // false=Prospect
+            }
+            $relance->setObjet('Lorem ipsum dolor sit amet');
+            $relance->setContenu('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
+            $relance->setDateEcheance(new DateTime('now'));
+            $relance->setStatut(mt_rand(0, 1)); // true=En cours  false=Archivé
+            $relance->setCreatedAt(new DateTimeImmutable('now'));
+            $manager->persist($relance);
+            $relances[] = $relance;
+        }
 
         $manager->flush();
-
     }
 }
