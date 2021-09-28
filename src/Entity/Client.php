@@ -57,7 +57,7 @@ class Client
     private $modified_at;
 
     /**
-     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client", fetch="LAZY")
      */
     private $adresses;
 

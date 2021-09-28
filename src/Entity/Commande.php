@@ -52,7 +52,7 @@ class Commande
     private $updated_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes", fetch="LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;

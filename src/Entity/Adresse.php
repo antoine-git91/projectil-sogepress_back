@@ -40,12 +40,13 @@ class Adresse
     private $ville;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses", fetch="LAZY")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
 
     /**
+     * Facturation ou livraison
      * @ORM\Column(type="boolean")
      */
     private $statut_adresse;

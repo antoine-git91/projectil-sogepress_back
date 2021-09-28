@@ -5,11 +5,15 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
+    public const USER_REFERENCE = 'test_user';
+
     public function load(ObjectManager $manager)
     {
         // USER
@@ -22,5 +26,15 @@ class UserFixtures extends Fixture
         $test_user->setCreatedAt(new DateTimeImmutable('now'));
         $manager->persist($test_user);
         $manager->flush();
+        $this->addReference(self::USER_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
+    }
+
+    public function getDependencies() {
+        return [ContentTypesFixtures::class];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['group1'];
     }
 }

@@ -20,3 +20,9 @@ Puis, créer un fichier .env.local et paramétrer DATABASE_URL avec vos données
 symfony console doctrine:database:create
 symfony console doctrine:migrations:migrate
 ```
+
+Charger les données dans la base en deux étapes :
+- importer dans phpmyadmin les fichiers villes.sql et data_naf.sql
+- exécuter les fixtures avec `symfony console doctrine:fixtures:load --group=group1 --append`
+
+
