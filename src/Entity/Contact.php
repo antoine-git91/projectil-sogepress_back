@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"contact:read"}},
+ *     denormalizationContext={"groups"={"contact:write"}}
+ * )
  * @ORM\Entity(repositoryClass=ContactRepository::class)
  */
 class Contact
@@ -18,62 +22,74 @@ class Contact
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("contact:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $fonction;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $tel;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $defaut;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("contact:read")
      */
     private $modified_at;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contacts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToMany(targetEntity=Commande::class, mappedBy="contact")
+     * @Groups({"contact:read", "contact:write"})
      */
     private $commandes;
 
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="contact")
+     * @Groups({"contact:read", "contact:write"})
      */
     private $historiqueClients;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("contact:read")
      */
     private $created_at;
 
