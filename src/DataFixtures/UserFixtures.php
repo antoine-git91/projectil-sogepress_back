@@ -18,10 +18,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         // USER
         $test_user = new User();
-        $test_user->setNom('Projectil');
-        $test_user->setPrenom('Sogepress');
-        $test_user->setEmail('test@test.com');
-        $test_user->setPassword('vErySecure_1234');
+        $test_user->setNom('Projectil2');
+        $test_user->setPrenom('Sogepress2');
+        $test_user->setEmail('adresse@mail.loc');
+        $test_user->setPassword('1234');
         $test_user->setRoles(['ROLE_COMMERCIAL']);
         $test_user->setCreatedAt(new DateTimeImmutable('now'));
         $manager->persist($test_user);
