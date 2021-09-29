@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"client:read"}},
+ *     denormalizationContext={"groups"={"client:write"}}
+ * )
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  */
 class Client
@@ -18,82 +22,98 @@ class Client
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("client:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"client:read", "client:write"})
      */
     private $raison_sociale;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"client:read", "client:write"})
      */
     private $statut;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"client:read", "client:write"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"client:read", "client:write"})
      */
     private $site_internet;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"client:read", "client:write"})
      */
     private $type_facturation;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("client:read")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("client:read")
      */
     private $modified_at;
 
     /**
      * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client", fetch="LAZY")
+     * @Groups({"client:read", "client:write"})
      */
     private $adresses;
 
     /**
      * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client")
+     * @Groups({"client:read", "client:write"})
      */
     private $contacts;
 
     /**
      * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="client")
+     * @Groups({"client:read", "client:write"})
      */
     private $potentialites;
 
     /**
      * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="client")
+     * @Groups({"client:read", "client:write"})
      */
     private $commandes;
 
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="client")
+     * @Groups({"client:read", "client:write"})
      */
     private $historiqueClients;
 
     /**
      * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="client")
+     * @Groups({"client:read", "client:write"})
      */
     private $relances;
 
     /**
      * @ORM\OneToOne(targetEntity=Magazine::class, mappedBy="client", cascade={"persist", "remove"})
+     * @Groups({"client:read", "client:write"})
      */
     private $magazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=NafSousClasses::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"client:read", "client:write"})
      */
     private $naf_sous_classe;
 

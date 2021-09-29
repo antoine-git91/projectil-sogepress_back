@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use App\Repository\AdresseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"adresse:read"}},
+ *     denormalizationContext={"groups"={"adresse:write"}}
+ * )
  */
 class Adresse
 {
@@ -14,40 +20,47 @@ class Adresse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("adresse:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $type_voie;
 
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $nom_voie;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $ville;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses", fetch="LAZY")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $client;
 
     /**
      * Facturation ou livraison
      * @ORM\Column(type="boolean")
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $statut_adresse;
 

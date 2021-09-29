@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\RelanceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"relance:read"}},
+ *     denormalizationContext={"groups"={"relance:write"}}
+ * )
  * @ORM\Entity(repositoryClass=RelanceRepository::class)
  */
 class Relance
@@ -16,47 +20,56 @@ class Relance
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("relance:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"relance:read", "relance:write"})
      */
     private $type_relance;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"relance:read", "relance:write"})
      */
     private $objet;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"relance:read", "relance:write"})
      */
     private $contenu;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"relance:read", "relance:write"})
      */
     private $date_echeance;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"relance:read", "relance:write"})
      */
     private $statut;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="relances")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"relance:read", "relance:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="relances")
+     * @Groups({"relance:read", "relance:write"})
      */
     private $commande;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("relance:read")
      */
     private $created_at;
 
