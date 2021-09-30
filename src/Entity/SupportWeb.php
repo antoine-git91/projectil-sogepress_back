@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SupportWebRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SupportWebRepository::class)
@@ -19,11 +20,13 @@ class SupportWeb
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("commande:read")
      */
     private $url;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("commande:read")
      */
     private $echeance_contrat;
 
@@ -36,12 +39,14 @@ class SupportWeb
     /**
      * @ORM\ManyToOne(targetEntity=TypePrestationWeb::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("commande:read")
      */
     private $type_prestation;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeSiteWeb::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("commande:read")
      */
     private $type_site;
 

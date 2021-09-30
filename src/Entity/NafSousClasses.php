@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\NafSousClassesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=NafSousClassesRepository::class)
@@ -19,6 +20,7 @@ class NafSousClasses
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("client:read")
      */
     private $libelle;
 

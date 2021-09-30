@@ -7,10 +7,14 @@ use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"commande:read"}},
+ *     denormalizationContext={"groups"={"commande:write"}}
+ * )
  */
 class Commande
 {
@@ -18,99 +22,118 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"commande:read", "client:read", "contact:read", "user:read", "relance:read", "historique:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $facturation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $reduction;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $debut;
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $fin;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("commande:read")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("commande:read")
      */
     private $updated_at;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes", fetch="LAZY")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"commande:read", "commande:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToMany(targetEntity=Contact::class, inversedBy="commandes")
+     * @Groups({"commande:read", "commande:write"})
      */
     private $contact;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"commande:read", "commande:write", "client:read"})
      */
     private $user;
 
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="commande")
+     * @Groups({"commande:read", "commande:write"})
      */
     private $historiqueClients;
 
     /**
      * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="commande")
+     * @Groups({"commande:read", "commande:write"})
      */
     private $relances;
 
     /**
      * @ORM\OneToOne(targetEntity=SupportWeb::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @Groups({"commande:read", "commande:write"})
      */
     private $supportWeb;
 
     /**
      * @ORM\OneToOne(targetEntity=SupportPrint::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @Groups({"commande:read", "commande:write"})
      */
     private $supportPrint;
 
     /**
      * @ORM\OneToOne(targetEntity=CommunityManagement::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @Groups({"commande:read", "commande:write"})
      */
     private $communityManagement;
 
     /**
      * @ORM\OneToOne(targetEntity=Contenu::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @Groups({"commande:read", "commande:write"})
      */
     private $contenu;
 
     /**
      * @ORM\OneToOne(targetEntity=Encart::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @Groups({"commande:read", "commande:write"})
      */
     private $encart;
 
     /**
      * @ORM\OneToOne(targetEntity=SupportMagazine::class, mappedBy="commande", cascade={"persist", "remove"})
+     * @Groups({"commande:read", "commande:write"})
      */
     private $supportMagazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=CommandeStatus::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"commande:read", "commande:write"})
      */
     private $statut;
 

@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\PotentialitesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"potentialite:read"}},
+ *     denormalizationContext={"groups"={"potentialite:write"}}
+ * )
  * @ORM\Entity(repositoryClass=PotentialitesRepository::class)
  */
 class Potentialite
@@ -16,28 +20,33 @@ class Potentialite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"potentialite:read", "client:read", "magazine:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
     private $commentaire;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="potentialites")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"potentialite:read", "potentialite:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=Magazine::class, inversedBy="potentialites")
+     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
     private $magazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypePotentialite::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
     private $type_potentialite;
 

@@ -1,6 +1,6 @@
 api_platform:
     title: "CRM Projectil-Sogrepress"
-    description: "Outil de gestion commeriale pour l'entreprise Projectil-Sogepress"
+    description: "Outil de gestion commeriale pour l'agence de communication Projectil-Sogepress"
     version: "1.0.0"
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']

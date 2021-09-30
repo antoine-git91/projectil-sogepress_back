@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\MagazineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"magazine:read"}},
+ *     denormalizationContext={"groups"={"magazine:write"}}
+ * )
  * @ORM\Entity(repositoryClass=MagazineRepository::class)
  */
 class Magazine
@@ -18,27 +22,32 @@ class Magazine
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"magazine:read", "client:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"magazine:read","magazine:write", "client:read"})
      */
     private $nom;
 
     /**
      * @ORM\OneToOne(targetEntity=Client::class, inversedBy="magazine", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="magazine")
+     * @Groups({"magazine:read","magazine:write", "client:read"})
      */
     private $supportMagazine;
 
     /**
      * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $potentialites;
 

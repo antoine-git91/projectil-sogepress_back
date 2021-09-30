@@ -93,7 +93,7 @@ class ContentTypesFixtures extends Fixture implements FixtureGroupInterface
 
         foreach (self::TYPES_POTENTIALITES as $libelle) {
             $typePotentialite = new TypePotentialite();
-            $typePotentialite->setLibelle('Web');
+            $typePotentialite->setLibelle($libelle);
             $types_potentialites[] = $typePotentialite;
             $this->addReference(self::TYPES_POTENTIALITES[array_search($libelle, self::TYPES_POTENTIALITES)], $typePotentialite);
             $manager->persist($typePotentialite);

@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\HistoriqueClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"historique:read"}},
+ *     denormalizationContext={"groups"={"historique:write"}}
+ * )
  * @ORM\Entity(repositoryClass=HistoriqueClientRepository::class)
  */
 class HistoriqueClient
@@ -16,45 +20,53 @@ class HistoriqueClient
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"historique:read", "contact:read", "user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"historique:read", "historique:write", "client:read", "commande:read"})
      */
     private $commentaire;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups("historique:read")
      */
     private $created_at;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="historiqueClients")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"historique:read", "historique:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contact::class, inversedBy="historiqueClients")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"historique:read", "historique:write"})
      */
     private $contact;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="historiqueClients")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"historique:read", "historique:write"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="historiqueClients")
+     * @Groups({"historique:read", "historique:write"})
      */
     private $commande;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeHistorique::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"historique:read", "historique:write", "client:read", "commande:read"})
      */
     private $type_historique;
 

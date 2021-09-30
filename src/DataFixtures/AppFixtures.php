@@ -203,7 +203,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface, FixtureG
 
         foreach ($clients as $client) {
             $magazine = new Magazine();
-            $magazine->setNom('Magazine_'.$i);
+            $magazine->setNom('Magazine '. $client->getRaisonSociale());
             $magazine->setClient($client);
             $magazines[] = $magazine;
             $manager->persist($magazine);
