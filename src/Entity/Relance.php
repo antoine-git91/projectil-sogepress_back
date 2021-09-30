@@ -25,10 +25,10 @@ class Relance
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", name="type_relance")
      * @Groups({"relance:read", "relance:write"})
      */
-    private $type_relance;
+    private $typeRelance;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,10 +43,10 @@ class Relance
     private $contenu;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", name="date_echeance")
      * @Groups({"relance:read", "relance:write"})
      */
-    private $date_echeance;
+    private $dateEcheance;
 
     /**
      * @ORM\Column(type="boolean")
@@ -68,10 +68,10 @@ class Relance
     private $commande;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", name="created_at")
      * @Groups("relance:read")
      */
-    private $created_at;
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -80,12 +80,12 @@ class Relance
 
     public function getTypeRelance(): ?bool
     {
-        return $this->type_relance;
+        return $this->typeRelance;
     }
 
-    public function setTypeRelance(bool $type_relance): self
+    public function setTypeRelance(bool $typeRelance): self
     {
-        $this->type_relance = $type_relance;
+        $this->typeRelance = $typeRelance;
 
         return $this;
     }
@@ -116,12 +116,12 @@ class Relance
 
     public function getDateEcheance(): ?\DateTimeInterface
     {
-        return $this->date_echeance;
+        return $this->dateEcheance;
     }
 
-    public function setDateEcheance(\DateTimeInterface $date_echeance): self
+    public function setDateEcheance(\DateTimeInterface $dateEcheance): self
     {
-        $this->date_echeance = $date_echeance;
+        $this->dateEcheance = $dateEcheance;
 
         return $this;
     }
@@ -164,12 +164,12 @@ class Relance
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }

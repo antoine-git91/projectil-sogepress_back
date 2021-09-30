@@ -30,10 +30,10 @@ class NafClasses
     private $nafSousClasses;
 
     /**
-     * @ORM\ManyToOne(targetEntity=NafGroupes::class, inversedBy="nafClasses")
+     * @ORM\ManyToOne(targetEntity=NafGroupes::class, inversedBy="nafClasses", name="naf_groupe")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $naf_groupe;
+    private $nafGroupe;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -94,12 +94,12 @@ class NafClasses
 
     public function getNafGroupe(): ?NafGroupes
     {
-        return $this->naf_groupe;
+        return $this->nafGroupe;
     }
 
-    public function setNafGroupe(?NafGroupes $naf_groupe): self
+    public function setNafGroupe(?NafGroupes $nafGroupe): self
     {
-        $this->naf_groupe = $naf_groupe;
+        $this->nafGroupe = $nafGroupe;
 
         return $this;
     }

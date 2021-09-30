@@ -18,9 +18,9 @@ class CommunityManagement
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="post_mensuel")
      */
-    private $post_mensuel;
+    private $postMensuel;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="communityManagement", cascade={"persist", "remove"})
@@ -32,7 +32,7 @@ class CommunityManagement
      * @ORM\ManyToOne(targetEntity=ReseauSocial::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $reseau_social;
+    private $reseauSocial;
 
     public function getId(): ?int
     {
@@ -41,12 +41,12 @@ class CommunityManagement
 
     public function getPostMensuel(): ?int
     {
-        return $this->post_mensuel;
+        return $this->postMensuel;
     }
 
-    public function setPostMensuel(int $post_mensuel): self
+    public function setPostMensuel(int $postMensuel): self
     {
-        $this->post_mensuel = $post_mensuel;
+        $this->postMensuel = $postMensuel;
 
         return $this;
     }
@@ -65,12 +65,12 @@ class CommunityManagement
 
     public function getReseauSocial(): ?ReseauSocial
     {
-        return $this->reseau_social;
+        return $this->reseauSocial;
     }
 
-    public function setReseauSocial(?ReseauSocial $reseau_social): self
+    public function setReseauSocial(?ReseauSocial $reseauSocial): self
     {
-        $this->reseau_social = $reseau_social;
+        $this->reseauSocial = $reseauSocial;
 
         return $this;
     }

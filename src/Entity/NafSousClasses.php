@@ -26,7 +26,7 @@ class NafSousClasses
      * @ORM\ManyToOne(targetEntity=NafClasses::class, inversedBy="nafSousClasses")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $naf_classe;
+    private $nafClasse;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -52,12 +52,12 @@ class NafSousClasses
 
     public function getNafClasse(): ?NafClasses
     {
-        return $this->naf_classe;
+        return $this->nafClasse;
     }
 
-    public function setNafClasse(?NafClasses $naf_classe): self
+    public function setNafClasse(?NafClasses $nafClasse): self
     {
-        $this->naf_classe = $naf_classe;
+        $this->nafClasse = $nafClasse;
 
         return $this;
     }

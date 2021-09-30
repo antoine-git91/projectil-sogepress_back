@@ -18,9 +18,9 @@ class Contenu
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", name="type_contenu")
      */
-    private $type_contenu;
+    private $typeContenu;
 
     /**
      * @ORM\Column(type="integer")
@@ -40,12 +40,12 @@ class Contenu
 
     public function getTypeContenu(): ?bool
     {
-        return $this->type_contenu;
+        return $this->typeContenu;
     }
 
-    public function setTypeContenu(bool $type_contenu): self
+    public function setTypeContenu(bool $typeContenu): self
     {
-        $this->type_contenu = $type_contenu;
+        $this->typeContenu = $typeContenu;
 
         return $this;
     }

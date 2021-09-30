@@ -33,7 +33,7 @@ class NafGroupes
      * @ORM\ManyToOne(targetEntity=NafDivisions::class, inversedBy="nafGroupes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $naf_divisions;
+    private $nafDivisions;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -94,12 +94,12 @@ class NafGroupes
 
     public function getNafDivisions(): ?NafDivisions
     {
-        return $this->naf_divisions;
+        return $this->nafDivisions;
     }
 
-    public function setNafDivisions(?NafDivisions $naf_divisions): self
+    public function setNafDivisions(?NafDivisions $nafDivisions): self
     {
-        $this->naf_divisions = $naf_divisions;
+        $this->nafDivisions = $nafDivisions;
 
         return $this;
     }

@@ -28,10 +28,10 @@ class Ville
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=5, name="code_postal")
      * @Groups({"adresse:read"})
      */
-    private $code_postal;
+    private $codePostal;
 
     /**
      * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="ville")
@@ -74,12 +74,12 @@ class Ville
 
     public function getCodePostal(): ?string
     {
-        return $this->code_postal;
+        return $this->codePostal;
     }
 
-    public function setCodePostal(string $code_postal): self
+    public function setCodePostal(string $codePostal): self
     {
-        $this->code_postal = $code_postal;
+        $this->codePostal = $codePostal;
 
         return $this;
     }

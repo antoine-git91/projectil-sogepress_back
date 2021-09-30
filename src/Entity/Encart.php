@@ -27,7 +27,7 @@ class Encart
      * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="encarts")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $support_magazine;
+    private $supportMagazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=EmplacementMagazine::class)
@@ -60,12 +60,12 @@ class Encart
 
     public function getSupportMagazine(): ?SupportMagazine
     {
-        return $this->support_magazine;
+        return $this->supportMagazine;
     }
 
-    public function setSupportMagazine(?SupportMagazine $support_magazine): self
+    public function setSupportMagazine(?SupportMagazine $supportMagazine): self
     {
-        $this->support_magazine = $support_magazine;
+        $this->supportMagazine = $supportMagazine;
 
         return $this;
     }

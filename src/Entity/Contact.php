@@ -63,10 +63,10 @@ class Contact
     private $defaut;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="modified_at")
      * @Groups("contact:read")
      */
-    private $modified_at;
+    private $modifiedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contacts")
@@ -88,10 +88,10 @@ class Contact
     private $historiqueClients;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", name="created_at")
      * @Groups("contact:read")
      */
-    private $created_at;
+    private $createdAt;
 
     public function __construct()
     {
@@ -178,12 +178,12 @@ class Contact
 
     public function getModifiedAt(): ?\DateTimeInterface
     {
-        return $this->modified_at;
+        return $this->modifiedAt;
     }
 
-    public function setModifiedAt(?\DateTimeInterface $modified_at): self
+    public function setModifiedAt(?\DateTimeInterface $modifiedAt): self
     {
-        $this->modified_at = $modified_at;
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }
@@ -259,12 +259,12 @@ class Contact
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }

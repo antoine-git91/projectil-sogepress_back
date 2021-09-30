@@ -37,9 +37,9 @@ class SupportMagazine
     private $edition;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", name="fin_commercialisation")
      */
-    private $fin_commercialisation;
+    private $finCommercialisation;
 
     /**
      * @ORM\OneToMany(targetEntity=Magazine::class, mappedBy="supportMagazine")
@@ -106,12 +106,12 @@ class SupportMagazine
 
     public function getFinCommercialisation(): ?\DateTimeInterface
     {
-        return $this->fin_commercialisation;
+        return $this->finCommercialisation;
     }
 
-    public function setFinCommercialisation(\DateTimeInterface $fin_commercialisation): self
+    public function setFinCommercialisation(\DateTimeInterface $finCommercialisation): self
     {
-        $this->fin_commercialisation = $fin_commercialisation;
+        $this->finCommercialisation = $finCommercialisation;
 
         return $this;
     }
