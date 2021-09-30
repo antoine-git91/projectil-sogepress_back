@@ -28,31 +28,31 @@ class Contact
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
      */
     private $fonction;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
      */
     private $tel;
 

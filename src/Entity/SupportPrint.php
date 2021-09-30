@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SupportPrintRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SupportPrintRepository::class)
@@ -19,6 +20,7 @@ class SupportPrint
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("commande:read")
      */
     private $quantite;
 

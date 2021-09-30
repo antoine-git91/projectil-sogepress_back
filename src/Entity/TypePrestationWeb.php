@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TypePrestationWebRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TypePrestationWebRepository::class)
@@ -19,6 +20,7 @@ class TypePrestationWeb
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("commande:read")
      */
     private $libelle;
 

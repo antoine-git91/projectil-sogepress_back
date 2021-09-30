@@ -22,32 +22,32 @@ class Magazine
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("magazine:read")
+     * @Groups({"magazine:read", "client:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write", "client:read"})
      */
     private $nom;
 
     /**
      * @ORM\OneToOne(targetEntity=Client::class, inversedBy="magazine", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="magazine")
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write", "client:read"})
      */
     private $supportMagazine;
 
     /**
      * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine")
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $potentialites;
 

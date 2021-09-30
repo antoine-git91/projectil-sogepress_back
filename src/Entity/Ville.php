@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VilleRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,11 +23,13 @@ class Ville
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"client:read", "adresse:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"client:read", "adresse:read"})
      */
     private $code_postal;
 

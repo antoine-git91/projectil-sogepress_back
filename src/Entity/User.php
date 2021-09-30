@@ -51,13 +51,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","user:write"})
+     * @Groups({"user:read","user:write", "client:read", "commande:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","user:write"})
+     * @Groups({"user:read","user:write", "client:read", "commande:read"})
      */
     private $prenom;
 

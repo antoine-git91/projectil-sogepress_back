@@ -20,13 +20,13 @@ class Potentialite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("potentialites:read")
+     * @Groups({"potentialite:read", "client:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"potentialite:read", "potentialite:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
     private $commentaire;
 
@@ -39,14 +39,14 @@ class Potentialite
 
     /**
      * @ORM\ManyToOne(targetEntity=Magazine::class, inversedBy="potentialites")
-     * @Groups({"potentialite:read", "potentialite:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
     private $magazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypePotentialite::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"potentialite:read", "potentialite:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
     private $type_potentialite;
 

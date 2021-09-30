@@ -20,13 +20,13 @@ class HistoriqueClient
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("historique:read")
+     * @Groups({"historique:read", "contact:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"historique:read", "historique:write"})
+     * @Groups({"historique:read", "historique:write", "client:read", "commande:read"})
      */
     private $commentaire;
 
@@ -66,7 +66,7 @@ class HistoriqueClient
     /**
      * @ORM\ManyToOne(targetEntity=TypeHistorique::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"historique:read", "historique:write"})
+     * @Groups({"historique:read", "historique:write", "client:read", "commande:read"})
      */
     private $type_historique;
 

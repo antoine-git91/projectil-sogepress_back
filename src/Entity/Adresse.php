@@ -26,27 +26,27 @@ class Adresse
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $type_voie;
 
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $nom_voie;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $ville;
 

@@ -22,13 +22,13 @@ class Client
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("client:read")
+     * @Groups({"client:read", "contact:read", "adresse:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"client:read", "client:write"})
+     * @Groups({"client:read", "client:write", "adresse:read", "commande:read"})
      */
     private $raison_sociale;
 
@@ -40,7 +40,7 @@ class Client
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"client:read", "client:write"})
+     * @Groups({"client:read", "client:write", "adresse:read", "commande:read"})
      */
     private $email;
 

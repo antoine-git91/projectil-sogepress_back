@@ -26,31 +26,31 @@ class Relance
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"relance:read", "relance:write"})
+     * @Groups({"relance:read", "relance:write", "client:read", "commande:read"})
      */
     private $type_relance;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"relance:read", "relance:write"})
+     * @Groups({"relance:read", "relance:write", "client:read", "commande:read"})
      */
     private $objet;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"relance:read", "relance:write"})
+     * @Groups({"relance:read", "relance:write", "commande:read"})
      */
     private $contenu;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"relance:read", "relance:write"})
+     * @Groups({"relance:read", "relance:write", "client:read", "commande:read"})
      */
     private $date_echeance;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"relance:read", "relance:write"})
+     * @Groups({"relance:read", "relance:write", "client:read", "commande:read"})
      */
     private $statut;
 

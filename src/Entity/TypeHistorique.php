@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TypeHistoriqueRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TypeHistoriqueRepository::class)
@@ -19,6 +20,7 @@ class TypeHistorique
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"client:read", "commande:read"})
      */
     private $libelle;
 

@@ -22,31 +22,31 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("commande:read")
+     * @Groups({"commande:read", "client:read", "contact:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $facturation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $reduction;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $debut;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
      */
     private $fin;
 
@@ -78,7 +78,7 @@ class Commande
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read", "commande:write", "client:read"})
      */
     private $user;
 
