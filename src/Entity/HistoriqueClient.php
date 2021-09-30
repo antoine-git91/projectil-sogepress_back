@@ -20,7 +20,7 @@ class HistoriqueClient
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("historique:read")
+     * @Groups({"historique:read", "user:read"})
      */
     private $id;
 

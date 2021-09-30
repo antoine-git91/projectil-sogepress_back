@@ -22,7 +22,7 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("commande:read")
+     * @Groups({"commande:read", "user:read", "relance:read", "historique:read"})
      */
     private $id;
 

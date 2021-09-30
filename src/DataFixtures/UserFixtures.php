@@ -12,7 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    public const USER_REFERENCE = 'test_user';
+    public const USER_REFERENCE = 'admin_test';
     private $userPasswordHasher;
 
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
@@ -24,10 +24,20 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
     {
         // USER
         $test_user = new User();
-        $test_user->setNom('Projectil');
-        $test_user->setPrenom('Sogepress');
-        $test_user->setEmail('test@test.com');
+        $test_user->setNom('Projectil-Sogepress');
+        $test_user->setPrenom('Admin');
+        $test_user->setEmail('admin@test.com');
         $test_user->setPassword($this->userPasswordHasher->hashPassword($test_user, 'vErySecure_1234'));
+        $test_user->setRoles(['ROLE_ADMIN']);
+        $test_user->setCreatedAt(new DateTimeImmutable('now'));
+        $manager->persist($test_user);
+        $this->addReference(self::USER_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
+
+        $test_user = new User();
+        $test_user->setNom('Projectil-Sogepress');
+        $test_user->setPrenom('Commercial');
+        $test_user->setEmail('commercial@test.com');
+        $test_user->setPassword($this->userPasswordHasher->hashPassword($test_user, 'vErySecure_5678'));
         $test_user->setRoles(['ROLE_COMMERCIAL']);
         $test_user->setCreatedAt(new DateTimeImmutable('now'));
         $manager->persist($test_user);

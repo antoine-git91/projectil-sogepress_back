@@ -22,7 +22,7 @@ class Client
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("client:read")
+     * @Groups({"client:read", "relance:read", "potentialite:read","magazine:read", "historique:read"})
      */
     private $id;
 
