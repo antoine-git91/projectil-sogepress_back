@@ -21,6 +21,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    // TODO : lors d'un POST (nouveau user) -> implémenter le chiffrement du mot de passe
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("user:read")
+     * @Groups({"user:read", "user:write"})
      */
     private $roles = [];
 
@@ -62,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups("user:read")
+     * @Groups({"user:read", "user:write"})
      */
     private $createdAt;
 

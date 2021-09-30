@@ -30,7 +30,7 @@ class NafClasses
     private $nafSousClasses;
 
     /**
-     * @ORM\ManyToOne(targetEntity=NafGroupes::class, inversedBy="nafClasses", name="naf_groupe")
+     * @ORM\ManyToOne(targetEntity=NafGroupes::class, inversedBy="nafClasses")
      * @ORM\JoinColumn(nullable=false)
      */
     private $nafGroupe;
