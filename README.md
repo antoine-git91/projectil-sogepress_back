@@ -25,4 +25,9 @@ Charger les données dans la base en deux étapes :
 - importer dans phpmyadmin les fichiers villes.sql et data_naf.sql (désactiver la vérification des clés étrangères. Rééxécuter l'import en cas d'erreur jusqu'à ce que les 5 tables naf aient des données chargées)
 - PUIS, exécuter les fixtures avec `symfony console doctrine:fixtures:load --group=group1 --append`
 
+Installation JWT :
+- Ne pas oublier `composer install` pour mettre à jour les packages
+
+
 Besoin de repartir à zéro avec la base de données ? run `symfony console doctrine:database:drop -f` (repartir ensuite à partir du create)
+

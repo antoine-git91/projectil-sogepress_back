@@ -25,8 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * 
-     * @Groups("user:read")
+     * @Groups({"user:read", "historique:read"})
      */
     private $id;
 
@@ -69,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups("user:read")
+     * @Groups({"user:read"})
      */
     private $logged_at;
 

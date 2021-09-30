@@ -15,12 +15,13 @@ class TypeHistorique
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"historique:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"client:read", "commande:read"})
+     * @Groups({"client:read", "commande:read", "historique:read"})
      */
     private $libelle;
 

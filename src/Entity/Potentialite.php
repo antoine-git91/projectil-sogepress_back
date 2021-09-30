@@ -20,7 +20,7 @@ class Potentialite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"potentialite:read", "client:read"})
+     * @Groups({"potentialite:read", "client:read", "magazine:read"})
      */
     private $id;
 

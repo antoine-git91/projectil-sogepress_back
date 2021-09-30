@@ -22,7 +22,7 @@ class Contact
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("contact:read")
+     * @Groups({"contact:read", "historique:read"})
      */
     private $id;
 
