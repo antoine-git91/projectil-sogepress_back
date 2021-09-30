@@ -190,7 +190,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface, FixtureG
             $commande->setFin(new DateTime('today +6M'));
             $commande->setFacturation(mt_rand(100, 2000));
             $commande->setReduction(mt_rand(0, 100));
-            $commande->setUser($this->getReference(UserFixtures::USER_REFERENCE));
+            $commande->setUser($this->getReference(UserFixtures::ADMIN_REFERENCE));
             $commande->setCreatedAt(new DateTimeImmutable());
             $commandes[] = $commande;
             $manager->persist($commande);
@@ -291,7 +291,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface, FixtureG
             $historiqueClient->setCommentaire('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
             $historiqueClient->setContact($contacts[mt_rand(0, sizeof($contacts) -1)]);
             $historiqueClient->setCreatedAt(new DateTimeImmutable);
-            $historiqueClient->setUser($this->getReference(UserFixtures::USER_REFERENCE));
+            $historiqueClient->setUser($this->getReference(UserFixtures::ADMIN_REFERENCE));
             $manager->persist($historiqueClient);
             $historiques[] = $historiqueClient;
         }
@@ -302,7 +302,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface, FixtureG
             $historiqueClient->setCommentaire('Ut at gravida urna. Integer nec purus eu nibh lacinia congue sed a quam. In nec elit sed dui tempor posuere aliquam vitae est. Curabitur blandit imperdiet purus non lobortis. Nullam euismod porttitor est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum tincidunt at felis eget consectetur.');
             $historiqueClient->setContact($contacts[mt_rand(0, sizeof($contacts) -1)]);
             $historiqueClient->setCreatedAt(new DateTimeImmutable);
-            $historiqueClient->setUser($this->getReference(UserFixtures::USER_REFERENCE));
+            $historiqueClient->setUser($this->getReference(UserFixtures::ADMIN_REFERENCE));
             $manager->persist($historiqueClient);
             $historiques[] = $historiqueClient;
         }

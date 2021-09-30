@@ -6,6 +6,7 @@ use App\Repository\VilleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
@@ -16,16 +17,19 @@ class Ville
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"adresse:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"adresse:read"})
      */
     private $code_postal;
 
@@ -36,11 +40,13 @@ class Ville
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"adresse:read"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"adresse:read"})
      */
     private $longitude;
 

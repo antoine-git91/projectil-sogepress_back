@@ -12,7 +12,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    public const USER_REFERENCE = 'admin_test';
+    public const ADMIN_REFERENCE = 'admin_test';
+    public const COMMERCIAL_REFERENCE = 'admin_test';
     private $userPasswordHasher;
 
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
@@ -31,7 +32,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
         $test_user->setRoles(['ROLE_ADMIN']);
         $test_user->setCreatedAt(new DateTimeImmutable('now'));
         $manager->persist($test_user);
-        $this->addReference(self::USER_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
+        $this->addReference(self::ADMIN_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
 
         $test_user = new User();
         $test_user->setNom('Projectil-Sogepress');
@@ -41,7 +42,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
         $test_user->setRoles(['ROLE_COMMERCIAL']);
         $test_user->setCreatedAt(new DateTimeImmutable('now'));
         $manager->persist($test_user);
-        $this->addReference(self::USER_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
+        $this->addReference(self::COMMERCIAL_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
 
 //        $test_user->setNom('Projectil2');
 //        $test_user->setPrenom('Sogepress2');
