@@ -16,13 +16,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="`user`")
  * @ApiResource(
  *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={"user:write"}}
+ *     denormalizationContext={"groups"={"user:write"}},
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put", "delete"}
  * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
-    // TODO : lors d'un POST (nouveau user) -> implémenter le chiffrement du mot de passe
 
     /**
      * @ORM\Id

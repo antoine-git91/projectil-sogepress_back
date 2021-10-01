@@ -6,10 +6,16 @@ use App\Repository\VilleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"ville:read"}},
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
+ * )
  */
 class Ville
 {
@@ -17,19 +23,19 @@ class Ville
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"ville:read", "adresse:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"adresse:read"})
+     * @Groups({"ville:read", "adresse:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=5, name="code_postal")
-     * @Groups({"adresse:read"})
+     * @Groups({"ville:read", "adresse:read"})
      */
     private $codePostal;
 
@@ -40,13 +46,13 @@ class Ville
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"adresse:read"})
+     * @Groups({"ville:read", "adresse:read"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"adresse:read"})
+     * @Groups({"ville:read", "adresse:read"})
      */
     private $longitude;
 
