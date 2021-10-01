@@ -48,7 +48,7 @@ class Potentialite
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"potentialite:read", "potentialite:write", "client:read"})
      */
-    private $type_potentialite;
+    private $typePotentialite;
 
     public function getId(): ?int
     {
@@ -93,12 +93,12 @@ class Potentialite
 
     public function getTypePotentialite(): ?TypePotentialite
     {
-        return $this->type_potentialite;
+        return $this->typePotentialite;
     }
 
-    public function setTypePotentialite(?TypePotentialite $type_potentialite): self
+    public function setTypePotentialite(?TypePotentialite $typePotentialite): self
     {
-        $this->type_potentialite = $type_potentialite;
+        $this->typePotentialite = $typePotentialite;
 
         return $this;
     }

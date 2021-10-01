@@ -22,15 +22,15 @@ class Client
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"client:read", "contact:read", "adresse:read", "relance:read", "potentialite:read","magazine:read", "historique:read"})
+     * @Groups({"client:read", "contact:read", "adresse:read", "relance:read", "potentialite:read","magazine:read", "historique:read", "relance:write"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, name="raison_sociale")
      * @Groups({"client:read", "client:write", "adresse:read", "commande:read"})
      */
-    private $raison_sociale;
+    private $raisonSociale;
 
     /**
      * @ORM\Column(type="boolean")
@@ -45,28 +45,28 @@ class Client
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true, name="site_internet")
      * @Groups({"client:read", "client:write"})
      */
-    private $site_internet;
+    private $siteInternet;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", name="type_facturation")
      * @Groups({"client:read", "client:write"})
      */
-    private $type_facturation;
+    private $typeFacturation;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", name="created_at")
      * @Groups("client:read")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="modified_at")
      * @Groups("client:read")
      */
-    private $modified_at;
+    private $modifiedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client", fetch="LAZY")
@@ -115,7 +115,7 @@ class Client
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"client:read", "client:write"})
      */
-    private $naf_sous_classe;
+    private $nafSousClasse;
 
     public function __construct()
     {
@@ -134,12 +134,12 @@ class Client
 
     public function getRaisonSociale(): ?string
     {
-        return $this->raison_sociale;
+        return $this->raisonSociale;
     }
 
-    public function setRaisonSociale(string $raison_sociale): self
+    public function setRaisonSociale(string $raisonSociale): self
     {
-        $this->raison_sociale = $raison_sociale;
+        $this->raisonSociale = $raisonSociale;
 
         return $this;
     }
@@ -170,48 +170,48 @@ class Client
 
     public function getSiteInternet(): ?string
     {
-        return $this->site_internet;
+        return $this->siteInternet;
     }
 
-    public function setSiteInternet(?string $site_internet): self
+    public function setSiteInternet(?string $siteInternet): self
     {
-        $this->site_internet = $site_internet;
+        $this->siteInternet = $siteInternet;
 
         return $this;
     }
 
     public function getTypeFacturation(): ?bool
     {
-        return $this->type_facturation;
+        return $this->typeFacturation;
     }
 
-    public function setTypeFacturation(bool $type_facturation): self
+    public function setTypeFacturation(bool $typeFacturation): self
     {
-        $this->type_facturation = $type_facturation;
+        $this->typeFacturation = $typeFacturation;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getModifiedAt(): ?\DateTimeInterface
     {
-        return $this->modified_at;
+        return $this->modifiedAt;
     }
 
-    public function setModifiedAt(?\DateTimeInterface $modified_at): self
+    public function setModifiedAt(?\DateTimeInterface $modifiedAt): self
     {
-        $this->modified_at = $modified_at;
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }
@@ -415,12 +415,12 @@ class Client
 
     public function getNafSousClasse(): ?NafSousClasses
     {
-        return $this->naf_sous_classe;
+        return $this->nafSousClasse;
     }
 
-    public function setNafSousClasse(?NafSousClasses $naf_sous_classe): self
+    public function setNafSousClasse(?NafSousClasses $nafSousClasse): self
     {
-        $this->naf_sous_classe = $naf_sous_classe;
+        $this->nafSousClasse = $nafSousClasse;
 
         return $this;
     }

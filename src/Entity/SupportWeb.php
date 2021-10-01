@@ -25,10 +25,10 @@ class SupportWeb
     private $url;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date", nullable=true, name="echeance_contrat")
      * @Groups("commande:read")
      */
-    private $echeance_contrat;
+    private $echeanceContrat;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportWeb", cascade={"persist", "remove"})
@@ -41,14 +41,14 @@ class SupportWeb
      * @ORM\JoinColumn(nullable=false)
      * @Groups("commande:read")
      */
-    private $type_prestation;
+    private $typePrestation;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeSiteWeb::class)
      * @ORM\JoinColumn(nullable=false)
      * @Groups("commande:read")
      */
-    private $type_site;
+    private $typeSite;
 
     public function getId(): ?int
     {
@@ -69,12 +69,12 @@ class SupportWeb
 
     public function getEcheanceContrat(): ?\DateTimeInterface
     {
-        return $this->echeance_contrat;
+        return $this->echeanceContrat;
     }
 
-    public function setEcheanceContrat(?\DateTimeInterface $echeance_contrat): self
+    public function setEcheanceContrat(?\DateTimeInterface $echeanceContrat): self
     {
-        $this->echeance_contrat = $echeance_contrat;
+        $this->echeanceContrat = $echeanceContrat;
 
         return $this;
     }
@@ -93,24 +93,24 @@ class SupportWeb
 
     public function getTypePrestation(): ?TypePrestationWeb
     {
-        return $this->type_prestation;
+        return $this->typePrestation;
     }
 
-    public function setTypePrestation(?TypePrestationWeb $type_prestation): self
+    public function setTypePrestation(?TypePrestationWeb $typePrestation): self
     {
-        $this->type_prestation = $type_prestation;
+        $this->typePrestation = $typePrestation;
 
         return $this;
     }
 
     public function getTypeSite(): ?TypeSiteWeb
     {
-        return $this->type_site;
+        return $this->typeSite;
     }
 
-    public function setTypeSite(?TypeSiteWeb $type_site): self
+    public function setTypeSite(?TypeSiteWeb $typeSite): self
     {
-        $this->type_site = $type_site;
+        $this->typeSite = $typeSite;
 
         return $this;
     }

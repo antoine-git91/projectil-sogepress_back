@@ -31,10 +31,10 @@ class HistoriqueClient
     private $commentaire;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", name="created_at")
      * @Groups("historique:read")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="historiqueClients")
@@ -68,7 +68,7 @@ class HistoriqueClient
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"historique:read", "historique:write", "client:read", "commande:read"})
      */
-    private $type_historique;
+    private $typeHistorique;
 
     public function getId(): ?int
     {
@@ -89,12 +89,12 @@ class HistoriqueClient
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -149,12 +149,12 @@ class HistoriqueClient
 
     public function getTypeHistorique(): ?TypeHistorique
     {
-        return $this->type_historique;
+        return $this->typeHistorique;
     }
 
-    public function setTypeHistorique(?TypeHistorique $type_historique): self
+    public function setTypeHistorique(?TypeHistorique $typeHistorique): self
     {
-        $this->type_historique = $type_historique;
+        $this->typeHistorique = $typeHistorique;
 
         return $this;
     }

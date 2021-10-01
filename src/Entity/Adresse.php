@@ -10,8 +10,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
  * @ApiResource(
- *     normalizationContext={"groups"={"adresse:read"}},
- *     denormalizationContext={"groups"={"adresse:write"}}
+ *     normalizationContext = {"groups"={"adresse:read"}},
+ *     denormalizationContext = {"groups"={"adresse:write"}},
+ *     collectionOperations = {
+ *          "get",
+ *          "post"= {
+ *              "normalizationContext" = {"groups"={"adresse:read"}},
+ *              "denormalizationContext" = {"groups"={"adresse:write"}}
+ *          }
+ *      }
  * )
  */
 class Adresse
@@ -31,17 +38,17 @@ class Adresse
     private $numero;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, name="type_voie")
      * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
-    private $type_voie;
+    private $typeVoie;
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, name="nom_voie")
      * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
-    private $nom_voie;
+    private $nomVoie;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
@@ -51,7 +58,7 @@ class Adresse
     private $ville;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses", fetch="LAZY")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"adresse:read", "adresse:write"})
      */
@@ -59,10 +66,10 @@ class Adresse
 
     /**
      * Facturation ou livraison
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", name="statut_adresse")
      * @Groups({"adresse:read", "adresse:write"})
      */
-    private $statut_adresse;
+    private $statutAdresse;
 
     public function getId(): ?int
     {
@@ -83,24 +90,24 @@ class Adresse
 
     public function getTypeVoie(): ?string
     {
-        return $this->type_voie;
+        return $this->typeVoie;
     }
 
-    public function setTypeVoie(string $type_voie): self
+    public function setTypeVoie(string $typeVoie): self
     {
-        $this->type_voie = $type_voie;
+        $this->typeVoie = $typeVoie;
 
         return $this;
     }
 
     public function getNomVoie(): ?string
     {
-        return $this->nom_voie;
+        return $this->nomVoie;
     }
 
-    public function setNomVoie(string $nom_voie): self
+    public function setNomVoie(string $nomVoie): self
     {
-        $this->nom_voie = $nom_voie;
+        $this->nomVoie = $nomVoie;
 
         return $this;
     }
@@ -131,12 +138,12 @@ class Adresse
 
     public function getStatutAdresse(): ?bool
     {
-        return $this->statut_adresse;
+        return $this->statutAdresse;
     }
 
-    public function setStatutAdresse(bool $statut_adresse): self
+    public function setStatutAdresse(bool $statutAdresse): self
     {
-        $this->statut_adresse = $statut_adresse;
+        $this->statutAdresse = $statutAdresse;
 
         return $this;
     }

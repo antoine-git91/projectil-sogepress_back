@@ -21,6 +21,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    // TODO : lors d'un POST (nouveau user) -> implémenter le chiffrement du mot de passe
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -37,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("user:read")
+     * @Groups({"user:read", "user:write"})
      */
     private $roles = [];
 
@@ -61,16 +64,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Groups("user:read")
+     * @ORM\Column(type="datetime_immutable", name="created_at")
+     * @Groups({"user:read", "user:write"})
      */
-    private $created_at;
+    private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, name="logged_at")
      * @Groups({"user:read"})
      */
-    private $logged_at;
+    private $loggedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user")
@@ -205,24 +208,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getLoggedAt(): ?\DateTimeInterface
     {
-        return $this->logged_at;
+        return $this->loggedAt;
     }
 
-    public function setLoggedAt(?\DateTimeInterface $logged_at): self
+    public function setLoggedAt(?\DateTimeInterface $loggedAt): self
     {
-        $this->logged_at = $logged_at;
+        $this->loggedAt = $loggedAt;
 
         return $this;
     }

@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
@@ -18,6 +19,7 @@ class Ville
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"adresse:read", "adresse:write"})
      */
     private $id;
 
@@ -28,10 +30,10 @@ class Ville
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=5, name="code_postal")
      * @Groups({"client:read", "adresse:read"})
      */
-    private $code_postal;
+    private $codePostal;
 
     /**
      * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="ville")
@@ -40,11 +42,13 @@ class Ville
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"adresse:read"})
      */
     private $latitude;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"adresse:read"})
      */
     private $longitude;
 
@@ -72,12 +76,12 @@ class Ville
 
     public function getCodePostal(): ?string
     {
-        return $this->code_postal;
+        return $this->codePostal;
     }
 
-    public function setCodePostal(string $code_postal): self
+    public function setCodePostal(string $codePostal): self
     {
-        $this->code_postal = $code_postal;
+        $this->codePostal = $codePostal;
 
         return $this;
     }
