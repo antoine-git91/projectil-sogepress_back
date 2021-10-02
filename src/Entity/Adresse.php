@@ -22,33 +22,33 @@ class Adresse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("adresse:read")
+     * @Groups({"adresse:read", "client:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255, name="type_voie")
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $typeVoie;
 
 
     /**
      * @ORM\Column(type="string", length=255, name="nom_voie")
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $nomVoie;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $ville;
 
@@ -62,7 +62,7 @@ class Adresse
     /**
      * Facturation ou livraison
      * @ORM\Column(type="boolean", name="statut_adresse")
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $statutAdresse;
 
