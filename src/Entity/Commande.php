@@ -13,11 +13,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"commande:read"}},
- *     denormalizationContext={"groups"={"commande:write"}}
+ *     denormalizationContext={"groups"={"commande:write"}},
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
  * )
  */
 class Commande
 {
+    //TODO : la relation à SupportMagazine est en OneToOne -> c'est normal ? un support doit pouvoir être relié à plusieurs commandes
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -52,7 +56,7 @@ class Commande
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups("commande:read")
+     * @Groups({"commande:read", "commande:write"})
      */
     private $createdAt;
 

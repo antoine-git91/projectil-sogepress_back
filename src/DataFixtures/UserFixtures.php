@@ -13,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public const ADMIN_REFERENCE = 'admin_test';
-    public const COMMERCIAL_REFERENCE = 'admin_test';
+    public const COMMERCIAL_REFERENCE = 'commercial_test';
     private $userPasswordHasher;
 
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
@@ -43,11 +43,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Fixture
         $test_user->setCreatedAt(new DateTimeImmutable('now'));
         $manager->persist($test_user);
         $this->addReference(self::COMMERCIAL_REFERENCE, $test_user); // ajout de la référence pour inclusion dans les autres fixtures
-
-//        $test_user->setNom('Projectil2');
-//        $test_user->setPrenom('Sogepress2');
-//        $test_user->setEmail('adresse@mail.loc');
-//        $test_user->setPassword('1234');
 
         $manager->flush();
     }

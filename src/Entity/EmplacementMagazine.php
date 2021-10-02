@@ -3,10 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\EmplacementMagazineRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=EmplacementMagazineRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"emplacement_magazine:read"}},
+ *     denormalizationContext={"groups"={"emplacement_magazine:write"}},
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
+ * )
  */
 class EmplacementMagazine
 {
@@ -19,6 +27,7 @@ class EmplacementMagazine
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"commande:read"})
      */
     private $libelle;
 

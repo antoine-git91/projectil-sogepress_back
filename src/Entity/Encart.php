@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EncartRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EncartRepository::class)
@@ -14,6 +15,7 @@ class Encart
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"commande:read"})
      */
     private $id;
 
@@ -26,18 +28,21 @@ class Encart
     /**
      * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="encarts")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"commande:read"})
      */
     private $supportMagazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=EmplacementMagazine::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"commande:read"})
      */
     private $emplacement;
 
     /**
      * @ORM\ManyToOne(targetEntity=FormatEncart::class)
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"commande:read"})
      */
     private $format;
 

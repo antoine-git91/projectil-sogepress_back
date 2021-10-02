@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SupportMagazineRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SupportMagazineRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"support_magazine:read"}},
+ *     denormalizationContext={"groups"={"support_magazine:write"}},
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
+ * )
  */
 class SupportMagazine
 {
@@ -17,43 +24,50 @@ class SupportMagazine
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"magazine:read"})
+     * @Groups({"support_magazine:read", "commande:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"support_magazine:read"})
      */
     private $pages;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"support_magazine:read"})
      */
     private $quantite;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"support_magazine:read"})
      */
     private $edition;
 
     /**
      * @ORM\Column(type="date", name="fin_commercialisation")
+     * @Groups({"support_magazine:read"})
      */
     private $finCommercialisation;
 
     /**
      * @ORM\OneToMany(targetEntity=Magazine::class, mappedBy="supportMagazine")
+     * @Groups({"support_magazine:read"})
      */
     private $magazine;
 
     /**
-     * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportMagazine", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportMagazine")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"support_magazine:read"})
      */
     private $commande;
 
     /**
      * @ORM\OneToMany(targetEntity=Encart::class, mappedBy="support_magazine")
+     * @Groups({"support_magazine:read"})
      */
     private $encarts;
 
