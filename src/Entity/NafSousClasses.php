@@ -12,8 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     normalizationContext={"groups"={"naf_sous_classe:read"}},
  *     denormalizationContext={"groups"={"naf_sous_classe:write"}},
- *     collectionOperations = {},
- *     itemOperations = {}
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
  * )
  */
 class NafSousClasses

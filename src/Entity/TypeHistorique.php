@@ -3,11 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\TypeHistoriqueRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TypeHistoriqueRepository::class)
+ * @ApiResource(
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
+ * )
  */
 class TypeHistorique
 {

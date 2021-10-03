@@ -8,11 +8,13 @@ use App\Repository\PotentialitesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass=PotentialitesRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"potentialite:read"}},
- *     denormalizationContext={"groups"={"potentialite:write"}}
+ *     denormalizationContext={"groups"={"potentialite:write"}},
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
  * )
- * @ORM\Entity(repositoryClass=PotentialitesRepository::class)
  */
 class Potentialite
 {
@@ -20,20 +22,20 @@ class Potentialite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"potentialites:read", "magazine:read"})
+     * @Groups({"potentialite:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"potentialite:read", "potentialite:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "magazine:write"})
      */
     private $commentaire;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="potentialites")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"potentialite:read", "potentialite:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "magazine:write"})
      */
     private $client;
 
@@ -46,7 +48,7 @@ class Potentialite
     /**
      * @ORM\ManyToOne(targetEntity=TypePotentialite::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"potentialite:read", "potentialite:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "magazine:write"})
      */
     private $typePotentialite;
 

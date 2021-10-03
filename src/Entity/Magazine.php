@@ -4,17 +4,20 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\MagazineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass=MagazineRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"magazine:read"}},
- *     denormalizationContext={"groups"={"magazine:write"}}
+ *     denormalizationContext={"groups"={"magazine:write"}},
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
  * )
- * @ORM\Entity(repositoryClass=MagazineRepository::class)
  */
 class Magazine
 {
@@ -22,32 +25,33 @@ class Magazine
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("magazine:read")
+     * @Groups({"magazine:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $nom;
 
     /**
      * @ORM\OneToOne(targetEntity=Client::class, inversedBy="magazine", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="magazine")
-     * @Groups("magazine:read","magazine:write")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $supportMagazine;
 
     /**
-     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine")
-     * @Groups("magazine:read","magazine:write")
+     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine", cascade={"persist"}, orphanRemoval=true)
+     * @Groups({"magazine:read","magazine:write"})
+     * @Assert\Valid
      */
     private $potentialites;
 

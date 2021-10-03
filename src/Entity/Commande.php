@@ -21,6 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Commande
 {
     //TODO : la relation à SupportMagazine est en OneToOne -> c'est normal ? un support doit pouvoir être relié à plusieurs commandes
+    // et aussi on peut pas supprimer à cause des contraintes d'intégrité. Faut mettre un orphanRemoval
 
     /**
      * @ORM\Id
