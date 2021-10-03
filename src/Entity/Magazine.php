@@ -4,17 +4,20 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\MagazineRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass=MagazineRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"magazine:read"}},
- *     denormalizationContext={"groups"={"magazine:write"}}
+ *     denormalizationContext={"groups"={"magazine:write"}},
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
  * )
- * @ORM\Entity(repositoryClass=MagazineRepository::class)
  */
 class Magazine
 {
@@ -46,8 +49,9 @@ class Magazine
     private $supportMagazine;
 
     /**
-     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine")
+     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"magazine:read","magazine:write"})
+     * @Assert\Valid
      */
     private $potentialites;
 

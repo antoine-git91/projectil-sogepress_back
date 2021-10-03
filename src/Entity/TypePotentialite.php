@@ -4,10 +4,15 @@ namespace App\Entity;
 
 use App\Repository\TypePotentialiteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TypePotentialiteRepository::class)
+ * @ApiResource(
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
+ * )
  */
 class TypePotentialite
 {

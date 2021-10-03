@@ -8,11 +8,11 @@ use App\Repository\RelanceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass=RelanceRepository::class)
  * @ApiResource(
  *     normalizationContext={"groups"={"relance:read"}},
  *     denormalizationContext={"groups"={"relance:write"}}
  * )
- * @ORM\Entity(repositoryClass=RelanceRepository::class)
  */
 class Relance
 {
@@ -69,7 +69,7 @@ class Relance
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups("relance:read")
+     * @Groups({"relance:read", "relance:write"})
      */
     private $createdAt;
 

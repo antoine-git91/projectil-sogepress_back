@@ -8,11 +8,13 @@ use App\Repository\HistoriqueClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(
- *     normalizationContext={"groups"={"historique:read"}},
- *     denormalizationContext={"groups"={"historique:write"}}
- * )
  * @ORM\Entity(repositoryClass=HistoriqueClientRepository::class)
+ *  * @ApiResource(
+ *     normalizationContext={"groups"={"historique:read"}},
+ *     denormalizationContext={"groups"={"historique:write"}},
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
+ * )
  */
 class HistoriqueClient
 {
@@ -32,7 +34,7 @@ class HistoriqueClient
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups("historique:read")
+     * @Groups({"historique:read", "historique:write"})
      */
     private $createdAt;
 

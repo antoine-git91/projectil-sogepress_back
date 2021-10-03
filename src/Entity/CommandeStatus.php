@@ -4,10 +4,17 @@ namespace App\Entity;
 
 use App\Repository\CommandeStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommandeStatusRepository::class)
+ * @ApiResource(
+ *     normalizationContext={},
+ *     denormalizationContext={},
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
+ * )
  */
 class CommandeStatus
 {
@@ -20,7 +27,7 @@ class CommandeStatus
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("commande:read")
+     * @Groups({"commande:read"})
      */
     private $libelle;
 

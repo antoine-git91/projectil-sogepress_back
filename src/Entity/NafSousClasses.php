@@ -4,10 +4,17 @@ namespace App\Entity;
 
 use App\Repository\NafSousClassesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=NafSousClassesRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"naf_sous_classe:read"}},
+ *     denormalizationContext={"groups"={"naf_sous_classe:write"}},
+ *     collectionOperations = {"get"},
+ *     itemOperations = {"get"}
+ * )
  */
 class NafSousClasses
 {
@@ -15,12 +22,13 @@ class NafSousClasses
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"naf_sous_classe:read", "client:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("client:read")
+     * @Groups({"naf_sous_classe:read", "client:read"})
      */
     private $libelle;
 
@@ -32,6 +40,7 @@ class NafSousClasses
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"naf_sous_classe:read", "client:read"})
      */
     private $code;
 

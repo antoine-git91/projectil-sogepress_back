@@ -12,7 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource(
  *     normalizationContext={"groups"={"contact:read"}},
- *     denormalizationContext={"groups"={"contact:write"}}
+ *     denormalizationContext={"groups"={"contact:write"}},
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
  * )
  * @ORM\Entity(repositoryClass=ContactRepository::class)
  */
@@ -89,7 +91,7 @@ class Contact
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups("contact:read")
+     * @Groups({"contact:read", "contact:write"})
      */
     private $createdAt;
 

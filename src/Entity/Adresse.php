@@ -12,13 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *     normalizationContext = {"groups"={"adresse:read"}},
  *     denormalizationContext = {"groups"={"adresse:write"}},
- *     collectionOperations = {
- *          "get",
- *          "post"= {
- *              "normalizationContext" = {"groups"={"adresse:read"}},
- *              "denormalizationContext" = {"groups"={"adresse:write"}}
- *          }
- *      }
+ *     collectionOperations = {"get", "post"},
+ *     itemOperations = {"get", "put", "delete"}
  * )
  */
 class Adresse
@@ -27,7 +22,7 @@ class Adresse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("adresse:read")
+     * @Groups({"adresse:read", "client:read"})
      */
     private $id;
 
@@ -67,7 +62,7 @@ class Adresse
     /**
      * Facturation ou livraison
      * @ORM\Column(type="boolean", name="statut_adresse")
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({"adresse:read", "adresse:write", "client:read"})
      */
     private $statutAdresse;
 
