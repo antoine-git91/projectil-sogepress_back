@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ContactRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,37 +32,38 @@ class Contact
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $fonction;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
+     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $tel;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $defaut;
 

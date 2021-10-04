@@ -82,8 +82,9 @@ class Client
     private $adresses;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"client:read", "client:write"})
+     * @Assert\Valid
      */
     private $contacts;
 
