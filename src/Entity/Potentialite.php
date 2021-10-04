@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=PotentialitesRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"potentialite:read"}},
  *     denormalizationContext={"groups"={"potentialite:write"}},
  *     collectionOperations = {"get", "post"},

@@ -218,7 +218,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface, FixtureG
         for ($i = 0; $i < 5; $i++) {
             $produit = new SupportMagazine();
             $produit->setCommande($commandes[$commande_counter]);
-            $produit->addMagazine($magazines[mt_rand(0, sizeof($magazines) -1)]);
+            $produit->setMagazine($magazines[mt_rand(0, sizeof($magazines) -1)]);
             $produit->setEdition('Septembre 2021');
             $produit->setPages(mt_rand(10, 50));
             $produit->setQuantite(mt_rand(100, 5000));

@@ -25,7 +25,7 @@ class NafGroupes
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=NafClasses::class, mappedBy="naf_groupe")
+     * @ORM\OneToMany(targetEntity=NafClasses::class, mappedBy="nafGroupe")
      */
     private $nafClasses;
 

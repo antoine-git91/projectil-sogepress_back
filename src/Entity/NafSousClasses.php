@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=NafSousClassesRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"naf_sous_classe:read"}},
  *     denormalizationContext={"groups"={"naf_sous_classe:write"}},
  *     collectionOperations = {"get"},

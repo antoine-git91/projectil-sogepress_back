@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"contact:read"}},
  *     denormalizationContext={"groups"={"contact:write"}},
  *     collectionOperations = {"get", "post"},
