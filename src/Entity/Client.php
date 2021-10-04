@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTime;
+use DateTimeImmutable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ClientRepository;
@@ -13,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"client:read"}},
  *     denormalizationContext={"groups"={"client:write"}},
  *     collectionOperations = {"get", "post"},
@@ -79,8 +82,9 @@ class Client
     private $adresses;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"client:read", "client:write"})
+     * @Assert\Valid
      */
     private $contacts;
 

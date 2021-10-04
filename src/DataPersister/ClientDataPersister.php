@@ -3,12 +3,13 @@
 namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use App\Entity\Contact;
+use ApiPlatform\Core\DataPersister\ResumableDataPersisterInterface;
+use App\Entity\Client;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ContactDataPersister implements ContextAwareDataPersisterInterface
+class ClientDataPersister implements ContextAwareDataPersisterInterface, ResumableDataPersisterInterface
 {
     private $entityManager;
 
@@ -24,11 +25,16 @@ class ContactDataPersister implements ContextAwareDataPersisterInterface
      */
     public function supports($data, array $context = []): bool
     {
-        return $data instanceof Contact;
+        return $data instanceof Client;
     }
 
     public function persist($data, array $context = [])
     {
+        // quand contact embedded dans client : ne passe pas dans le ContactDataPersister
+        foreach ($data->getContacts() as $contact) {
+            $contact->setCreatedAt(new DateTimeImmutable());
+        }
+
         if (is_null($data->getCreatedAt())) {
             $data->setCreatedAt(new DateTimeImmutable());
         } else {
@@ -43,5 +49,11 @@ class ContactDataPersister implements ContextAwareDataPersisterInterface
     {
         $this->entityManager->remove($data);
         $this->entityManager->flush();
+    }
+
+    // sert à rien...
+    public function resumable(array $context = []): bool
+    {
+        return true;
     }
 }

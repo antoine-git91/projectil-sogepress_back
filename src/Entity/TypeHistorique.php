@@ -10,6 +10,7 @@ use Symfony\component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=TypeHistoriqueRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     collectionOperations = {"get"},
  *     itemOperations = {"get"}
  * )

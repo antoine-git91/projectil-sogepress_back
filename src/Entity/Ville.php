@@ -12,9 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"ville:read"}},
  *     collectionOperations={"get"},
- *     itemOperations={"get"}
+ *     itemOperations={"get"},
  * )
  */
 class Ville

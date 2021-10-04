@@ -3,12 +3,11 @@
 namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
-use App\Entity\Contact;
-use DateTime;
+use App\Entity\Relance;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ContactDataPersister implements ContextAwareDataPersisterInterface
+class RelanceDataPersister implements ContextAwareDataPersisterInterface
 {
     private $entityManager;
 
@@ -24,15 +23,13 @@ class ContactDataPersister implements ContextAwareDataPersisterInterface
      */
     public function supports($data, array $context = []): bool
     {
-        return $data instanceof Contact;
+        return $data instanceof Relance;
     }
 
     public function persist($data, array $context = [])
     {
         if (is_null($data->getCreatedAt())) {
             $data->setCreatedAt(new DateTimeImmutable());
-        } else {
-            $data->setModifiedAt(new DateTime());
         }
         $this->entityManager->persist($data);
         $this->entityManager->flush();

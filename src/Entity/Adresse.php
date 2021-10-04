@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext = {"groups"={"adresse:read"}},
  *     denormalizationContext = {"groups"={"adresse:write"}},
  *     collectionOperations = {"get", "post"},

@@ -25,7 +25,7 @@ class NafSections
     private $libelle;
 
     /**
-     * @ORM\OneToMany(targetEntity=NafDivisions::class, mappedBy="naf_sections")
+     * @ORM\OneToMany(targetEntity=NafDivisions::class, mappedBy="nafSections")
      */
     private $nafDivisions;
 

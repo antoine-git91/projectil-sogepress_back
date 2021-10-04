@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=SupportMagazineRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"support_magazine:read"}},
  *     denormalizationContext={"groups"={"support_magazine:write"}},
  *     collectionOperations={"get"},
@@ -53,10 +54,11 @@ class SupportMagazine
     private $finCommercialisation;
 
     /**
-     * @ORM\OneToMany(targetEntity=Magazine::class, mappedBy="supportMagazine")
+     * @ORM\ManyToOne(targetEntity=Magazine::class, inversedBy="supportMagazine")
      * @Groups({"support_magazine:read"})
      */
     private $magazine;
+
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportMagazine")
@@ -66,7 +68,7 @@ class SupportMagazine
     private $commande;
 
     /**
-     * @ORM\OneToMany(targetEntity=Encart::class, mappedBy="support_magazine")
+     * @ORM\OneToMany(targetEntity=Encart::class, mappedBy="supportMagazine")
      * @Groups({"support_magazine:read"})
      */
     private $encarts;
@@ -130,32 +132,15 @@ class SupportMagazine
         return $this;
     }
 
-    /**
-     * @return Collection|Magazine[]
-     */
-    public function getMagazine(): Collection
+    public function getMagazine(): ?Magazine
     {
         return $this->magazine;
     }
 
-    public function addMagazine(Magazine $magazine): self
-    {
-        if (!$this->magazine->contains($magazine)) {
-            $this->magazine[] = $magazine;
-            $magazine->setSupportMagazine($this);
-        }
 
-        return $this;
-    }
-
-    public function removeMagazine(Magazine $magazine): self
+    public function setMagazine(?Magazine $magazine): self
     {
-        if ($this->magazine->removeElement($magazine)) {
-            // set the owning side to null (unless already changed)
-            if ($magazine->getSupportMagazine() === $this) {
-                $magazine->setSupportMagazine(null);
-            }
-        }
+        $this->magazine = $magazine;
 
         return $this;
     }

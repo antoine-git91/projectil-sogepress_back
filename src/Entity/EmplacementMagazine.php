@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=EmplacementMagazineRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"emplacement_magazine:read"}},
  *     denormalizationContext={"groups"={"emplacement_magazine:write"}},
  *     collectionOperations = {"get"},

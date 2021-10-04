@@ -5,12 +5,14 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ContactRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"contact:read"}},
  *     denormalizationContext={"groups"={"contact:write"}},
  *     collectionOperations = {"get", "post"},
@@ -30,45 +32,40 @@ class Contact
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
      */
     private $fonction;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
+     * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:read", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
      */
     private $tel;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $defaut;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true, name="modified_at")
-     * @Groups("contact:read")
-     */
-    private $modifiedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contacts")
@@ -91,9 +88,15 @@ class Contact
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="modified_at")
+     * @Groups({"contact:read", "contact:write", "client:write"})
+     */
+    private $modifiedAt;
 
     public function __construct()
     {

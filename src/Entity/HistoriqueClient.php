@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=HistoriqueClientRepository::class)
  *  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"historique:read"}},
  *     denormalizationContext={"groups"={"historique:write"}},
  *     collectionOperations = {"get", "post"},

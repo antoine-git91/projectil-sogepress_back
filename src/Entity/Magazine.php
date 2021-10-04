@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=MagazineRepository::class)
  * @ApiResource(
+ *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
  *     normalizationContext={"groups"={"magazine:read"}},
  *     denormalizationContext={"groups"={"magazine:write"}},
  *     collectionOperations = {"get", "post"},
@@ -43,8 +44,8 @@ class Magazine
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="magazine")
-     * @Groups({"magazine:read","magazine:write", "client:read"})
+     * @ORM\OneToMany (targetEntity=SupportMagazine::class, mappedBy="magazine")
+     * @Groups({"magazine:read","magazine:write"})
      */
     private $supportMagazine;
 
@@ -89,14 +90,31 @@ class Magazine
         return $this;
     }
 
-    public function getSupportMagazine(): ?SupportMagazine
+    /**
+     * @return Collection|SupportMagazine[]
+     */
+    public function getSupportMagazine(): Collection
     {
         return $this->supportMagazine;
     }
 
-    public function setSupportMagazine(?SupportMagazine $supportMagazine): self
+    public function addSupportMagazine(SupportMagazine $supportMagazine): self
     {
-        $this->supportMagazine = $supportMagazine;
+        if (!$this->supportMagazine->contains($supportMagazine)) {
+            $this->supportMagazine[] = $supportMagazine;
+            $supportMagazine->setMagazine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupportMagazine(SupportMagazine $supportMagazine): self
+    {
+        if ($this->supportMagazine->removeElement($supportMagazine)) {
+            if ($supportMagazine->getMagazine() === $this) {
+                $supportMagazine->setMagazine(null);
+            }
+        }
 
         return $this;
     }
