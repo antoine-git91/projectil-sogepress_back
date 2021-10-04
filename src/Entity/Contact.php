@@ -68,12 +68,6 @@ class Contact
     private $defaut;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, name="modified_at")
-     * @Groups("contact:read")
-     */
-    private $modifiedAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contacts")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"contact:read", "contact:write"})
@@ -94,9 +88,15 @@ class Contact
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({"contact:read", "contact:write", "client:write"})
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="modified_at")
+     * @Groups({"contact:read", "contact:write", "client:write"})
+     */
+    private $modifiedAt;
 
     public function __construct()
     {
