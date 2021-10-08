@@ -88,7 +88,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface, FixtureG
         $adresse->setTypeVoie('Avenue');
         $adresse->setNomVoie('Marcel Dassault');
         $adresse->setVille($manager->getRepository(Ville::class)->findOneByNom('Tours'));
-        $adresse->setClient($clients[1]);
+        $adresse->setClient($clients[0]);
         $adresses[] = $adresse;
         $manager->persist($adresse);
 
