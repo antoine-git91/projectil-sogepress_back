@@ -40,6 +40,8 @@ class ClientDataPersister implements ContextAwareDataPersisterInterface, Resumab
         } else {
             $data->setModifiedAt(new DateTime());
         }
+
+
         $this->entityManager->persist($data);
         $this->entityManager->flush();
         return $data;

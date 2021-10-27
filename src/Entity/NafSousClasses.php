@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\NafSousClassesRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -23,8 +24,8 @@ class NafSousClasses
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"naf_sous_classe:read", "client:read"})
      */
+    #[ApiProperty(identifier: false)]
     private $id;
 
     /**
@@ -43,6 +44,7 @@ class NafSousClasses
      * @ORM\Column(type="string", length=10)
      * @Groups({"naf_sous_classe:read", "client:read"})
      */
+    #[ApiProperty(identifier: true)]
     private $code;
 
     public function getId(): ?int

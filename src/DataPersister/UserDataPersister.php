@@ -5,14 +5,14 @@ namespace App\DataPersister;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserDataPersister implements ContextAwareDataPersisterInterface
 {
-    private $entityManager;
-    private $userPasswordEncoder;
+    private EntityManagerInterface $entityManager;
+    private UserPasswordHasherInterface $userPasswordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordEncoder)
     {
         $this->entityManager = $entityManager;
         $this->userPasswordEncoder = $userPasswordEncoder;
@@ -28,17 +28,19 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
         return $data instanceof User;
     }
 
-    public function persist($data, array $context = [])
+    public function persist($data, array $context = []): object
     {
-        if ($data->getPassword()) {
-            $data->setPassword($this->userPasswordEncoder->encodePassword($data, $data->getPassword()));
+        if ($data->getPlainPassword() !== null) {
+            $password = $this->userPasswordEncoder->hashPassword($data, $data->getPlainPassword());
+            $data->setPassword($password);
         }
+
         $this->entityManager->persist($data);
         $this->entityManager->flush();
         return $data;
     }
 
-    public function remove($data, array $context = [])
+    public function remove($data, array $context = []): void
     {
         $this->entityManager->remove($data);
         $this->entityManager->flush();

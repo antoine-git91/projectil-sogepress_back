@@ -38,7 +38,7 @@ class Magazine
 
     /**
      * @ORM\OneToOne(targetEntity=Client::class, inversedBy="magazine", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({"magazine:read","magazine:write"})
      */
     private $client;

@@ -13,5 +13,3 @@ api_platform:
                 name: Authorization
                 type: header
     show_webby: false
-    defaults:
-        pagination_items_per_page: 20

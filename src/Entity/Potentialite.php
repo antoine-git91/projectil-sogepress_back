@@ -35,7 +35,7 @@ class Potentialite
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="potentialites")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({"potentialite:read", "potentialite:write", "magazine:write"})
      */
     private $client;

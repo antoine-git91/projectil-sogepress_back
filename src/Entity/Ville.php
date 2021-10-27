@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use App\Controller\VillesByCPController;
 use App\Repository\VilleRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -11,13 +13,35 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=VilleRepository::class)
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"ville:read"}},
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        "get" => [
+        ],
+        "getByCP" => [
+            'pagination_enabled' => false,
+            'path' => '/villesByCp/{code_postal}',
+            "controller" => VillesByCPController::class,
+            'method' => 'get',
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les villes correspondantes au code postal',
+                'parameters' => [
+                    ['in' => 'path',
+                    'name' => 'code_postal',
+                    'schema' => [
+                        'type' => 'integer']
+                    ]
+                ]
+            ]
+        ]
+        ],
+    itemOperations: ["get"],
+    attributes: [
+        "security"=>"is_granted('ROLE_COMMERCIAL')"
+    ],
+    /*normalizationContext: ["groups"=>["ville:read"]]*/
+)]
 class Ville
 {
     /**

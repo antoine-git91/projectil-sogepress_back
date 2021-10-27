@@ -21,6 +21,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/Listener/'
 
     App\OpenApi\JwtDecorator:
         decorates: 'api_platform.openapi.factory'

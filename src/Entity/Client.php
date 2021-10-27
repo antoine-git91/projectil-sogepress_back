@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use DateTimeImmutable;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ClientRepository;
@@ -76,20 +77,20 @@ class Client
     private $modifiedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client", fetch="LAZY")
-     * @Groups({"client:read", "client:write"})
+     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client", fetch="LAZY", orphanRemoval=true)
+     * @Groups({"client:read", "client:write", "commande:read"})
      */
     private $adresses;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client",cascade={"persist"}, orphanRemoval=true)
      * @Groups({"client:read", "client:write"})
      * @Assert\Valid
      */
-    private $contacts;
+    private Collection $contacts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="client", orphanRemoval=true)
      * @Groups({"client:read", "client:write"})
      */
     private $potentialites;
@@ -101,10 +102,10 @@ class Client
     private $commandes;
 
     /**
-     * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="client", orphanRemoval=true)
      * @Groups({"client:read", "client:write"})
      */
-    private $historiqueClients;
+    private Collection $historiqueClients;
 
     /**
      * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="client")

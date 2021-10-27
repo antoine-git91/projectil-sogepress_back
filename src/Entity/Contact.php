@@ -26,7 +26,7 @@ class Contact
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"contact:read", "historique:read"})
+     * @Groups({"contact:read", "historique:read", "client:read"})
      */
     private $id;
 
@@ -69,7 +69,7 @@ class Contact
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contacts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({"contact:read", "contact:write"})
      */
     private $client;

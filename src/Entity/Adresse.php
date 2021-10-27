@@ -49,13 +49,13 @@ class Adresse
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"adresse:read", "adresse:write", "client:read"})
+     * @Groups({"adresse:read", "client:read", "adresse:write"})
      */
     private $ville;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({"adresse:read", "adresse:write"})
      */
     private $client;

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Controller\LoggedInController;
+use App\Controller\UpdatePasswordController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,18 +12,27 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={"user:write"}},
- *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put", "delete"}
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post",
+        "loggedIn" => [
+            'pagination_enabled' => false,
+            'path' => '/loggedin',
+            'method' => 'get',
+            'controller' => LoggedInController::class,
+            'read'=> false
+        ],
+    ],
+    denormalizationContext: ['groups' => 'user:write'],
+    normalizationContext: ['groups' => 'user:read']
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
@@ -29,63 +40,69 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user:read", "historique:read"})
      */
+    #[Groups(["user:read", "historique:read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read","user:write"})
      */
+    #[Groups(["user:read", "user:write"])]
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user:read", "user:write"})
      */
+    #[Groups(["user:read", "user:write"])]
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups("user:write")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","user:write", "client:read", "commande:read"})
+     * @var string
+     * @Assert\Length(min="8", max="22") // Apply validation here, not on $password
      */
+    #[Groups("user:write")] // Expose using groups
+    private $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    #[Groups(["user:read","user:write", "client:read", "commande:read"])]
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user:read","user:write", "client:read", "commande:read"})
      */
+    #[Groups(["user:read","user:write", "client:read", "commande:read"])]
     private $prenom;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"user:read", "user:write"})
      */
+    #[Groups(["user:read","user:write"])]
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, name="logged_at")
-     * @Groups({"user:read"})
      */
+    #[Groups("user:read")]
     private $loggedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="user")
-     * @Groups({"user:read","user:write"})
      */
+    #[Groups(["user:read","user:write"])]
     private $commandes;
 
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="user")
-     * @Groups({"user:read","user:write"})
      */
+    #[Groups(["user:read","user:write"])]
     private $historiqueClients;
 
     public function __construct()
@@ -159,6 +176,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
