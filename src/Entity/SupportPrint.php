@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SupportPrintRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,6 +10,23 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=SupportPrintRepository::class)
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post"
+    ],
+    itemOperations: ["get"],
+    attributes: [
+        "security"=>"is_granted('ROLE_COMMERCIAL')"
+    ],
+    denormalizationContext: [
+        "groups" => ["support_print:write"]
+    ],
+    normalizationContext: [
+        "groups" => ["support_print:read"]
+    ]
+)]
+
 class SupportPrint
 {
     /**
@@ -20,7 +38,7 @@ class SupportPrint
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("commande:read")
+     * @Groups({ "commande:read", "postCommandeSupportPrint:write" })
      */
     private $quantite;
 
@@ -29,6 +47,12 @@ class SupportPrint
      * @ORM\JoinColumn(nullable=false)
      */
     private $commande;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypePrint::class, inversedBy="supportPrints")
+     * @Groups({ "commande:read", "postCommandeSupportPrint:write" })
+     */
+    private $typePrint;
 
     public function getId(): ?int
     {
@@ -55,6 +79,18 @@ class SupportPrint
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getTypePrint(): ?TypePrint
+    {
+        return $this->typePrint;
+    }
+
+    public function setTypePrint(?TypePrint $typePrint): self
+    {
+        $this->typePrint = $typePrint;
 
         return $this;
     }

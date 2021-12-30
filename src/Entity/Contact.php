@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\ContactsByClientController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\ContactRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,34 +12,62 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"contact:read"}},
- *     denormalizationContext={"groups"={"contact:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  * @ORM\Entity(repositoryClass=ContactRepository::class)
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "getContactsByClient" => [
+            'pagination_enabled' => false,
+            'path' => '/contactsByClient/{client_id}',
+            "controller" => ContactsByClientController::class,
+            'method' => 'get',
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les contacts correspondantes au client',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'client_id',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ],
+            "normalization_context" => [ "groups" => "contactByClient:read"]
+        ],
+        "post"
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "patch",
+        "delete"
+    ] ,
+    attributes: [
+        "security"=>"is_granted('ROLE_COMMERCIAL')"
+    ],
+    denormalizationContext: ["groups" => ["contact:write"]],
+    normalizationContext: ["groups" => ["contact:read"]]
+)]
 class Contact
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"contact:read", "historique:read", "client:read"})
+     * @Groups({"contact:read", "historique:read", "client:read", "contactByClient:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read", "contactByClient:read"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
+     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read", "contactByClient:read"})
      */
     private $prenom;
 

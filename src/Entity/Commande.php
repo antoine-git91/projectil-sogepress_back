@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,14 +14,57 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommandeRepository::class)
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"commande:read"}},
- *     denormalizationContext={"groups"={"commande:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post",
+        "postCommandeSupportPrint" => [
+            "method" => "post",
+            "path" => "/postCommandeSupportPrint",
+            "denormalization_context" => ['groups' => "postCommandeSupportPrint:write"]
+        ],
+        "postCommandeSupportWeb" => [
+            "method" => "post",
+            "path" => "/postCommandeSupportWeb",
+            "denormalization_context" => ['groups' => "postCommandeSupportWeb:write"]
+        ],
+        "postCommandeSupportMagazine" => [
+            "method" => "post",
+            "path" => "/postCommandeSupportMagazine",
+            "denormalization_context" => ['groups' => "postCommandeSupportMagazine:write"]
+        ],
+        "postCommandeContenu" => [
+            "method" => "post",
+            "path" => "/postCommandeContenu",
+            "denormalization_context" => ['groups' => "postCommandeContenu:write"]
+        ],
+        "postCommandeEncart" => [
+            "method" => "post",
+            "path" => "/postCommandeEncart",
+            "denormalization_context" => ['groups' => "postCommandeEncart:write"]
+        ],
+        "postCommandeCommunity" => [
+            "method" => "post",
+            "path" => "/postCommandeCommunity",
+            "denormalization_context" => ['groups' => "postCommandeCommunity:write"]
+        ]
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "delete"],
+    attributes: [
+        "security" => "is_granted('ROLE_COMMERCIAL')",
+        "pagination_items_per_page" => 20
+    ],
+    normalizationContext: [
+        "groups" => ["commande:read"]
+    ],
+)]
+#[ApiFilter(DateFilter::class, properties: [ 'debut' => 'exact', "fin" => "exact" ])]
+#[ApiFilter(SearchFilter::class, properties: [ "client" => "exact", ])]
+
 class Commande
 {
 
@@ -26,118 +72,214 @@ class Commande
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"commande:read", "client:read", "contact:read", "user:read", "relance:read", "historique:read"})
+     * @Groups({
+     *     "commande:read",
+     *     "client:read",
+     *     "contact:read",
+     *     "user:read",
+     *     "relance:read",
+     *     "historique:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
+     * @Groups({
+     *     "commande:read",
+     *     "client:read",
+     *     "contact:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $facturation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
+     * @Groups({
+     *     "commande:read",
+     *     "client:read",
+     *     "contact:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $reduction;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
+     * @Groups({"commande:read", "client:read", "contact:read"})
      */
     private $debut;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"commande:read", "commande:write", "client:read", "contact:read"})
+     * @Groups({
+     *     "commande:read",
+     *     "client:read",
+     *     "contact:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $fin;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, name="updated_at")
-     * @Groups("commande:read")
+     * @Groups({"commande:read"})
      */
     private $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes", fetch="LAZY")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $client;
 
     /**
      * @ORM\ManyToMany(targetEntity=Contact::class, inversedBy="commandes")
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $contact;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="commandes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "commande:write", "client:read"})
+     * @Groups({
+     *     "commande:read",
+     *     "client:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="commande")
-     * @Groups({"commande:read", "commande:write"})
+     * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="commande", cascade={"persist"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $historiqueClients;
 
     /**
      * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="commande")
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({"commande:read"})
      */
     private $relances;
 
     /**
      * @ORM\OneToOne(targetEntity=SupportWeb::class, mappedBy="commande", cascade={"persist", "remove"})
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportWeb:write"
+     * })
      */
     private $supportWeb;
 
     /**
      * @ORM\OneToOne(targetEntity=SupportPrint::class, mappedBy="commande", cascade={"persist", "remove"})
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportPrint:write"
+     * })
      */
     private $supportPrint;
 
     /**
      * @ORM\OneToOne(targetEntity=CommunityManagement::class, mappedBy="commande", cascade={"persist", "remove"})
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $communityManagement;
 
     /**
      * @ORM\OneToOne(targetEntity=Contenu::class, mappedBy="commande", cascade={"persist", "remove"})
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeContenu:write"
+     * })
      */
     private $contenu;
 
     /**
      * @ORM\OneToOne(targetEntity=Encart::class, mappedBy="commande", cascade={"persist", "remove"})
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeEncart:write"
+     * })
      */
     private $encart;
 
     /**
      * @ORM\OneToOne(targetEntity=SupportMagazine::class, mappedBy="commande", cascade={"persist", "remove"})
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportMagazine:write"
+     * })
      */
     private $supportMagazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=CommandeStatus::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "commande:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $statut;
 
@@ -286,6 +428,10 @@ class Commande
         if (!$this->historiqueClients->contains($historiqueClient)) {
             $this->historiqueClients[] = $historiqueClient;
             $historiqueClient->setCommande($this);
+        }
+
+        if(is_null($historiqueClient->getCreatedAt())){
+            $historiqueClient->setCreatedAt(new \DateTimeImmutable());
         }
 
         return $this;

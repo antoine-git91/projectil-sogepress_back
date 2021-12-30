@@ -23,40 +23,87 @@ class HistoriqueClient
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"historique:read", "contact:read", "client:read", "user:read"})
+     * @Groups({
+     *     "historique:read",
+     *     "contact:read",
+     *     "client:read",
+     *     "user:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"historique:read", "historique:write", "commande:read"})
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write",
+     *     "commande:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $commentaire;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"historique:read", "historique:write"})
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write"
+     * })
      */
     private $createdAt;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="historiqueClients")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"historique:read", "historique:write"})
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write",
+     *     "commande:write",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contact::class, inversedBy="historiqueClients")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"historique:read", "historique:write", "client:read"})
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write",
+     *     "client:read",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $contact;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="historiqueClients")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"historique:read", "historique:write"})
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write",
+     *     "postCommandeSupportPrint:write",
+     *     "postCommandeSupportWeb:write",
+     *     "postCommandeSupportMagazine:write",
+     *     "postCommandeContenu:write",
+     *     "postCommandeEncart:write",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $user;
 
@@ -68,8 +115,12 @@ class HistoriqueClient
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeHistorique::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"historique:read", "historique:write", "commande:read"})
+     * @ORM\JoinColumn(nullable=true)
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write",
+     *     "commande:read"
+     * })
      */
     private $typeHistorique;
 

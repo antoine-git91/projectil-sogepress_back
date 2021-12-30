@@ -21,7 +21,7 @@ class TypePotentialite
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"potentialite:read"})
+     * @Groups({"potentialite:read", "client:read"})
      */
     private $id;
 

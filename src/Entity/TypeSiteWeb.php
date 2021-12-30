@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TypeSiteWebRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TypeSiteWebRepository::class)
  */
+#[ApiResource(
+    collectionOperations: ["get"],
+    itemOperations: ["get"]
+)]
 class TypeSiteWeb
 {
     /**
@@ -20,7 +24,6 @@ class TypeSiteWeb
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("commande:read")
      */
     private $libelle;
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SupportWebRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,26 +10,32 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=SupportWebRepository::class)
  */
+#[ApiResource(
+    collectionOperations: [
+        "get", "post"
+    ],
+    itemOperations: [
+        "get"
+    ],
+    attributes: [
+        "security"=>"is_granted('ROLE_COMMERCIAL')"
+    ]
+)]
 class SupportWeb
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"commande:read"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups("commande:read")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"commande:read", "postCommandeSupportWeb:write"})
      */
     private $url;
-
-    /**
-     * @ORM\Column(type="date", nullable=true, name="echeance_contrat")
-     * @Groups("commande:read")
-     */
-    private $echeanceContrat;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportWeb", cascade={"persist", "remove"})
@@ -39,14 +46,14 @@ class SupportWeb
     /**
      * @ORM\ManyToOne(targetEntity=TypePrestationWeb::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("commande:read")
+     * @Groups({"commande:read", "postCommandeSupportWeb:write"})
      */
     private $typePrestation;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeSiteWeb::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("commande:read")
+     * @Groups({"commande:read", "postCommandeSupportWeb:write"})
      */
     private $typeSite;
 
@@ -63,18 +70,6 @@ class SupportWeb
     public function setUrl(string $url): self
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function getEcheanceContrat(): ?\DateTimeInterface
-    {
-        return $this->echeanceContrat;
-    }
-
-    public function setEcheanceContrat(?\DateTimeInterface $echeanceContrat): self
-    {
-        $this->echeanceContrat = $echeanceContrat;
 
         return $this;
     }

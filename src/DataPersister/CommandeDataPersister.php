@@ -4,7 +4,9 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\Commande;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use DateTime;
 
 class CommandeDataPersister implements ContextAwareDataPersisterInterface
 {
@@ -27,6 +29,16 @@ class CommandeDataPersister implements ContextAwareDataPersisterInterface
 
     public function persist($data, array $context = [])
     {
+        if (is_null($data->getCreatedAt())) {
+            $data->setCreatedAt(new DateTimeImmutable());
+        } else {
+            $data->setUpdatedAt(new DateTime());
+        }
+
+        if (is_null($data->getDebut())) {
+            $data->setDebut(new DateTimeImmutable());
+        }
+
         $this->entityManager->persist($data);
         $this->entityManager->flush();
         return $data;

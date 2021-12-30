@@ -15,120 +15,196 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"client:read"}},
- *     denormalizationContext={"groups"={"client:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post"
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "patch",
+        "delete"
+    ] ,
+    attributes: [
+        "security"=>"is_granted('ROLE_COMMERCIAL')",
+        "pagination_items_per_page" => 20
+    ],
+    denormalizationContext: ["groups" => ["client:write"]],
+    normalizationContext: ["groups" => ["client:read"]]
+)]
+
 class Client
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"client:read", "contact:read", "adresse:read", "relance:read", "potentialite:read","magazine:read", "historique:read", "relance:write"})
+     * @Groups({
+     *     "client:read",
+     *     "contact:read",
+     *     "adresse:read",
+     *     "relance:read",
+     *     "potentialite:read",
+     *     "magazine:read",
+     *     "historique:read",
+     *     "relance:write",
+     *     "commande:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, name="raison_sociale")
-     * @Groups({"client:read", "client:write", "adresse:read", "commande:read"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write",
+     *     "adresse:read",
+     *     "commande:read"
+     * })
      */
     private $raisonSociale;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $statut;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"client:read", "client:write", "adresse:read", "commande:read"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write",
+     *     "adresse:read",
+     *     "commande:read"
+     * })
      * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true, name="site_internet")
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $siteInternet;
 
     /**
      * @ORM\Column(type="boolean", name="type_facturation")
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $typeFacturation;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, name="modified_at")
-     * @Groups("client:read")
+     * @Groups({
+     *     "client:read"
+     * })
      */
     private $modifiedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client", fetch="LAZY", orphanRemoval=true)
-     * @Groups({"client:read", "client:write", "commande:read"})
+     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client",cascade={"persist"}, fetch="LAZY", orphanRemoval=true)
+     * @Groups({
+     *     "client:read",
+     *     "commande:read",
+     *     "client:write"
+     * })
      */
-    private $adresses;
+    private $adresse;
 
     /**
-     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client",cascade={"persist"}, orphanRemoval=true)
-     * @Groups({"client:read", "client:write"})
+     * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="client", cascade={"persist"}, orphanRemoval=true)
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      * @Assert\Valid
      */
     private Collection $contacts;
 
     /**
-     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="client", orphanRemoval=true)
-     * @Groups({"client:read", "client:write"})
+     * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="client", cascade={"persist"}, orphanRemoval=true)
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $potentialites;
 
     /**
      * @ORM\OneToMany(targetEntity=Commande::class, mappedBy="client")
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $commandes;
 
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="client", orphanRemoval=true)
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private Collection $historiqueClients;
 
     /**
      * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="client")
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $relances;
 
     /**
      * @ORM\OneToOne(targetEntity=Magazine::class, mappedBy="client", cascade={"persist", "remove"})
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $magazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=NafSousClasses::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"client:read", "client:write"})
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $nafSousClasse;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
     public function __construct()
     {
-        $this->adresses = new ArrayCollection();
+        $this->adresse = new ArrayCollection();
         $this->contacts = new ArrayCollection();
         $this->potentialites = new ArrayCollection();
         $this->commandes = new ArrayCollection();
@@ -228,15 +304,15 @@ class Client
     /**
      * @return Collection|Adresse[]
      */
-    public function getAdresses(): Collection
+    public function getAdresse(): Collection
     {
-        return $this->adresses;
+        return $this->adresse;
     }
 
     public function addAdresse(Adresse $adresse): self
     {
-        if (!$this->adresses->contains($adresse)) {
-            $this->adresses[] = $adresse;
+        if (!$this->adresse->contains($adresse)) {
+            $this->adresse[] = $adresse;
             $adresse->setClient($this);
         }
 
@@ -245,7 +321,7 @@ class Client
 
     public function removeAdresse(Adresse $adresse): self
     {
-        if ($this->adresses->removeElement($adresse)) {
+        if ($this->adresse->removeElement($adresse)) {
             // set the owning side to null (unless already changed)
             if ($adresse->getClient() === $this) {
                 $adresse->setClient(null);
@@ -430,6 +506,18 @@ class Client
     public function setNafSousClasse(?NafSousClasses $nafSousClasse): self
     {
         $this->nafSousClasse = $nafSousClasse;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

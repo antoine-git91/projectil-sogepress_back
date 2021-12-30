@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\EncartRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -9,6 +10,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=EncartRepository::class)
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post"
+    ],
+    itemOperations: ["get"]
+)]
 class Encart
 {
     /**
@@ -26,25 +34,24 @@ class Encart
     private $commande;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="encarts")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read"})
-     */
-    private $supportMagazine;
-
-    /**
      * @ORM\ManyToOne(targetEntity=EmplacementMagazine::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read"})
+     * @Groups({"commande:read", "postCommandeEncart:write"})
      */
     private $emplacement;
 
     /**
      * @ORM\ManyToOne(targetEntity=FormatEncart::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read"})
+     * @Groups({"commande:read", "postCommandeEncart:write"})
      */
     private $format;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=EditionMagazine::class, inversedBy="encart")
+     * @Groups({"postCommandeEncart:write"})
+     */
+    private $editionMagazine;
 
     public function getId(): ?int
     {
@@ -59,18 +66,6 @@ class Encart
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
-
-        return $this;
-    }
-
-    public function getSupportMagazine(): ?SupportMagazine
-    {
-        return $this->supportMagazine;
-    }
-
-    public function setSupportMagazine(?SupportMagazine $supportMagazine): self
-    {
-        $this->supportMagazine = $supportMagazine;
 
         return $this;
     }
@@ -95,6 +90,18 @@ class Encart
     public function setFormat(?FormatEncart $format): self
     {
         $this->format = $format;
+
+        return $this;
+    }
+
+    public function getEditionMagazine(): ?EditionMagazine
+    {
+        return $this->editionMagazine;
+    }
+
+    public function setEditionMagazine(?EditionMagazine $editionMagazine): self
+    {
+        $this->editionMagazine = $editionMagazine;
 
         return $this;
     }

@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Ville;
+use App\Entity\Contact;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
-class VillesByCPController extends AbstractController
+class ContactsByClientController extends AbstractController
 {
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -17,8 +17,8 @@ class VillesByCPController extends AbstractController
 
     public function __invoke(Request $request): array
     {
-        $query = $request->get('code_postal');
-        $codePostal = ['code_postal' => $query];
-        return $this->entityManager->getRepository(Ville::class)->findBy(['codePostal' => $codePostal]);
+        $query = $request->get('client_id');
+        $clientId = ['client_id' => $query];
+        return $this->entityManager->getRepository(Contact::class)->findBy(['client' => $clientId]);
     }
 }

@@ -42,14 +42,14 @@ class Potentialite
 
     /**
      * @ORM\ManyToOne(targetEntity=Magazine::class, inversedBy="potentialites")
-     * @Groups({"potentialite:read", "potentialite:write", "client:read"})
+     * @Groups({"potentialite:read", "potentialite:write", "client:read", "client:write"})
      */
     private $magazine;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypePotentialite::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"potentialite:read", "potentialite:write", "client:read", "magazine:write"})
+     * @Groups({"potentialite:read", "potentialite:write", "client:read", "client:write", "magazine:write"})
      */
     private $typePotentialite;
 
