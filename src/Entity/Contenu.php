@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContenuRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ContenuRepository::class)
@@ -18,12 +19,8 @@ class Contenu
     private $id;
 
     /**
-     * @ORM\Column(type="boolean", name="type_contenu")
-     */
-    private $typeContenu;
-
-    /**
      * @ORM\Column(type="integer")
+     * @Groups({"postCommandeContenu:write"})
      */
     private $feuillets;
 
@@ -33,21 +30,15 @@ class Contenu
      */
     private $commande;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeContenu::class, inversedBy="contenus")
+     * @Groups({"postCommandeContenu:write"})
+     */
+    private $typeContenu;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTypeContenu(): ?bool
-    {
-        return $this->typeContenu;
-    }
-
-    public function setTypeContenu(bool $typeContenu): self
-    {
-        $this->typeContenu = $typeContenu;
-
-        return $this;
     }
 
     public function getFeuillets(): ?int
@@ -70,6 +61,18 @@ class Contenu
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getTypeContenu(): ?TypeContenu
+    {
+        return $this->typeContenu;
+    }
+
+    public function setTypeContenu(?TypeContenu $typeContenu): self
+    {
+        $this->typeContenu = $typeContenu;
 
         return $this;
     }

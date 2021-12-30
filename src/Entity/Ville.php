@@ -35,13 +35,13 @@ use Doctrine\ORM\Mapping as ORM;
                 ]
             ]
         ]
-        ],
+    ],
     itemOperations: ["get"],
     attributes: [
         "security"=>"is_granted('ROLE_COMMERCIAL')"
-    ],
-    /*normalizationContext: ["groups"=>["ville:read"]]*/
+    ]
 )]
+
 class Ville
 {
     /**
@@ -123,22 +123,22 @@ class Ville
         return $this->adresses;
     }
 
-    public function addAdress(Adresse $adress): self
+    public function addAdress(Adresse $adresse): self
     {
-        if (!$this->adresses->contains($adress)) {
-            $this->adresses[] = $adress;
-            $adress->setVille($this);
+        if (!$this->adresses->contains($adresse)) {
+            $this->adresses[] = $adresse;
+            $adresse->setVille($this);
         }
 
         return $this;
     }
 
-    public function removeAdress(Adresse $adress): self
+    public function removeAdress(Adresse $adresse): self
     {
-        if ($this->adresses->removeElement($adress)) {
+        if ($this->adresses->removeElement($adresse)) {
             // set the owning side to null (unless already changed)
-            if ($adress->getVille() === $this) {
-                $adress->setVille(null);
+            if ($adresse->getVille() === $this) {
+                $adresse->setVille(null);
             }
         }
 

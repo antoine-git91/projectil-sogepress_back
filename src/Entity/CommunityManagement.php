@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommunityManagementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommunityManagementRepository::class)
@@ -19,6 +20,7 @@ class CommunityManagement
 
     /**
      * @ORM\Column(type="integer", name="post_mensuel")
+     * @Groups({"postCommandeCommunity:write"})
      */
     private $postMensuel;
 
@@ -27,12 +29,6 @@ class CommunityManagement
      * @ORM\JoinColumn(nullable=false)
      */
     private $commande;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=ReseauSocial::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $reseauSocial;
 
     public function getId(): ?int
     {
@@ -59,18 +55,6 @@ class CommunityManagement
     public function setCommande(Commande $commande): self
     {
         $this->commande = $commande;
-
-        return $this;
-    }
-
-    public function getReseauSocial(): ?ReseauSocial
-    {
-        return $this->reseauSocial;
-    }
-
-    public function setReseauSocial(?ReseauSocial $reseauSocial): self
-    {
-        $this->reseauSocial = $reseauSocial;
 
         return $this;
     }

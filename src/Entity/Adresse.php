@@ -9,61 +9,104 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext = {"groups"={"adresse:read"}},
- *     denormalizationContext = {"groups"={"adresse:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "post"
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "delete"
+    ],
+    attributes: [
+      "security"=> "is_granted('ROLE_COMMERCIAL')"
+    ],
+    denormalizationContext: [
+        "groups"=>["adresse:write"]
+    ],
+    normalizationContext: [
+        "groups"=>["adresse:read"]
+  ]
+  )]
 class Adresse
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"adresse:read", "client:read"})
+     * @Groups({
+     *     "adresse:read",
+     *     "client:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"adresse:read", "adresse:write", "client:read"})
+     * @Groups({
+     *     "adresse:read",
+     *     "adresse:write",
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $numero;
 
     /**
      * @ORM\Column(type="string", length=255, name="type_voie")
-     * @Groups({"adresse:read", "adresse:write", "client:read"})
+     * @Groups({
+     *     "adresse:read",
+     *     "adresse:write",
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $typeVoie;
 
 
     /**
      * @ORM\Column(type="string", length=255, name="nom_voie")
-     * @Groups({"adresse:read", "adresse:write", "client:read"})
+     * @Groups({
+     *     "adresse:read",
+     *     "adresse:write",
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $nomVoie;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="adresses")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"adresse:read", "client:read", "adresse:write"})
+     * @Groups({
+     *     "adresse:read",
+     *     "client:read",
+     *     "adresse:write",
+     *     "client:write"
+     * })
      */
     private $ville;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresses")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="adresse")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"adresse:read", "adresse:write"})
+     * @Groups({
+     *     "adresse:read",
+     *     "adresse:write"
+     * })
      */
     private $client;
 
     /**
      * Facturation ou livraison
      * @ORM\Column(type="boolean", name="statut_adresse")
-     * @Groups({"adresse:read", "adresse:write", "client:read"})
+     * @Groups({"adresse:read"
+     * , "adresse:write",
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $statutAdresse;
 

@@ -44,21 +44,21 @@ class Magazine
     private $client;
 
     /**
-     * @ORM\OneToMany (targetEntity=SupportMagazine::class, mappedBy="magazine")
-     * @Groups({"magazine:read","magazine:write"})
-     */
-    private $supportMagazine;
-
-    /**
      * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"magazine:read","magazine:write"})
      * @Assert\Valid
      */
     private $potentialites;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EditionMagazine::class, mappedBy="magazine", orphanRemoval=true)
+     */
+    private $editionMagazines;
+
     public function __construct()
     {
         $this->potentialites = new ArrayCollection();
+        $this->editionMagazines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,35 +91,6 @@ class Magazine
     }
 
     /**
-     * @return Collection|SupportMagazine[]
-     */
-    public function getSupportMagazine(): Collection
-    {
-        return $this->supportMagazine;
-    }
-
-    public function addSupportMagazine(SupportMagazine $supportMagazine): self
-    {
-        if (!$this->supportMagazine->contains($supportMagazine)) {
-            $this->supportMagazine[] = $supportMagazine;
-            $supportMagazine->setMagazine($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSupportMagazine(SupportMagazine $supportMagazine): self
-    {
-        if ($this->supportMagazine->removeElement($supportMagazine)) {
-            if ($supportMagazine->getMagazine() === $this) {
-                $supportMagazine->setMagazine(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Potentialite[]
      */
     public function getPotentialites(): Collection
@@ -143,6 +114,36 @@ class Magazine
             // set the owning side to null (unless already changed)
             if ($potentialite->getMagazine() === $this) {
                 $potentialite->setMagazine(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EditionMagazine[]
+     */
+    public function getEditionMagazines(): Collection
+    {
+        return $this->editionMagazines;
+    }
+
+    public function addEditionMagazine(EditionMagazine $editionMagazine): self
+    {
+        if (!$this->editionMagazines->contains($editionMagazine)) {
+            $this->editionMagazines[] = $editionMagazine;
+            $editionMagazine->setMagazine($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEditionMagazine(EditionMagazine $editionMagazine): self
+    {
+        if ($this->editionMagazines->removeElement($editionMagazine)) {
+            // set the owning side to null (unless already changed)
+            if ($editionMagazine->getMagazine() === $this) {
+                $editionMagazine->setMagazine(null);
             }
         }
 
