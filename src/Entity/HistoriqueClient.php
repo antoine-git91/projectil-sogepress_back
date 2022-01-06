@@ -109,6 +109,7 @@ class HistoriqueClient
 
     /**
      * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="historiqueClients")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Groups({"historique:read", "historique:write"})
      */
     private $commande;

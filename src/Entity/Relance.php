@@ -57,13 +57,14 @@ class Relance
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="relances")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({"relance:read", "relance:write"})
      */
     private $client;
 
     /**
      * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="relances")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Groups({"relance:read", "relance:write"})
      */
     private $commande;

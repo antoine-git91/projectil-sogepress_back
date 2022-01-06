@@ -16,7 +16,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: [
         "get",
-        "post"
+        "getEditionsByMagazine" => [
+            'pagination_enabled' => false,
+            'path' => '/editionsByMagazine/{magazine_id}',
+            "controller" => EditionsByMagazineController::class,
+            'method' => 'get',
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les éditions correspondantes au magazine',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'magazine_id',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ]
+        ],
+        "post",
     ],
     itemOperations: [
         "get"
@@ -36,37 +53,47 @@ class SupportMagazine
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"postCommandeSupportMagazine:write"})
+     * @Groups({
+     *     "postCommandeSupportMagazine:write",
+     *     "editionsByMagazine:read"
+     * })
      */
     private $pages;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"postCommandeSupportMagazine:write"})
+     * @Groups({
+     *     "postCommandeSupportMagazine:write",
+     *     "editionsByMagazine:read"
+     * })
      */
     private $quantite;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportMagazine")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $commande;
 
     /**
-     * @ORM\OneToMany(targetEntity=Encart::class, mappedBy="supportMagazine")
+     * @ORM\Column(type="string", length=255)
+     * @Groups({
+     *     "postCommandeSupportMagazine:write",
+     * })
      */
-    private $encarts;
+    private $nom;
 
     /**
-     * @ORM\OneToOne(targetEntity=EditionMagazine::class, cascade={"persist", "remove"})
-     * @Groups({"postCommandeSupportMagazine:write"})
+     * @ORM\ManyToOne(targetEntity=Magazine::class, inversedBy="supportMagazine")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Groups({
+     *     "postCommandeSupportMagazine:write",
+     * })
      */
-    private $edition;
+    private $magazine;
 
     public function __construct()
     {
-        $this->magazine = new ArrayCollection();
-        $this->encarts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,44 +137,26 @@ class SupportMagazine
         return $this;
     }
 
-    /**
-     * @return Collection|Encart[]
-     */
-    public function getEncarts(): Collection
+    public function getNom(): ?string
     {
-        return $this->encarts;
+        return $this->nom;
     }
 
-    public function addEncart(Encart $encart): self
+    public function setNom(string $nom): self
     {
-        if (!$this->encarts->contains($encart)) {
-            $this->encarts[] = $encart;
-            $encart->setSupportMagazine($this);
-        }
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function removeEncart(Encart $encart): self
+    public function getMagazine(): ?Magazine
     {
-        if ($this->encarts->removeElement($encart)) {
-            // set the owning side to null (unless already changed)
-            if ($encart->getSupportMagazine() === $this) {
-                $encart->setSupportMagazine(null);
-            }
-        }
-
-        return $this;
+        return $this->magazine;
     }
 
-    public function getEdition(): ?EditionMagazine
+    public function setMagazine(?Magazine $magazine): self
     {
-        return $this->edition;
-    }
-
-    public function setEdition(?EditionMagazine $edition): self
-    {
-        $this->edition = $edition;
+        $this->magazine = $magazine;
 
         return $this;
     }

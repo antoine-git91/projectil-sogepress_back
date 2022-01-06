@@ -102,8 +102,9 @@ class Adresse
     /**
      * Facturation ou livraison
      * @ORM\Column(type="boolean", name="statut_adresse")
-     * @Groups({"adresse:read"
-     * , "adresse:write",
+     * @Groups({
+     *     "adresse:read",
+     *     "adresse:write",
      *     "client:read",
      *     "client:write"
      * })

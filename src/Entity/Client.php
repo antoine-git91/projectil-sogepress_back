@@ -50,7 +50,8 @@ class Client
      *     "magazine:read",
      *     "historique:read",
      *     "relance:write",
-     *     "commande:read"
+     *     "commande:read",
+     *     "magazine:read",
      * })
      */
     private $id;
@@ -61,7 +62,8 @@ class Client
      *     "client:read",
      *     "client:write",
      *     "adresse:read",
-     *     "commande:read"
+     *     "commande:read",
+     *     "magazine:read",
      * })
      */
     private $raisonSociale;
@@ -179,15 +181,6 @@ class Client
     private $relances;
 
     /**
-     * @ORM\OneToOne(targetEntity=Magazine::class, mappedBy="client", cascade={"persist", "remove"})
-     * @Groups({
-     *     "client:read",
-     *     "client:write"
-     * })
-     */
-    private $magazine;
-
-    /**
      * @ORM\ManyToOne(targetEntity=NafSousClasses::class)
      * @ORM\JoinColumn(nullable=false)
      * @Groups({
@@ -199,8 +192,17 @@ class Client
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({
+     *     "client:read",
+     *     "client:write"
+     * })
      */
     private $telephone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Magazine::class, mappedBy="client")
+     */
+    private $magazine;
 
     public function __construct()
     {
@@ -210,6 +212,7 @@ class Client
         $this->commandes = new ArrayCollection();
         $this->historiqueClients = new ArrayCollection();
         $this->relances = new ArrayCollection();
+        $this->magazine = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -481,23 +484,6 @@ class Client
         return $this;
     }
 
-    public function getMagazine(): ?Magazine
-    {
-        return $this->magazine;
-    }
-
-    public function setMagazine(Magazine $magazine): self
-    {
-        // set the owning side of the relation if necessary
-        if ($magazine->getClient() !== $this) {
-            $magazine->setClient($this);
-        }
-
-        $this->magazine = $magazine;
-
-        return $this;
-    }
-
     public function getNafSousClasse(): ?NafSousClasses
     {
         return $this->nafSousClasse;
@@ -518,6 +504,36 @@ class Client
     public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Magazine[]
+     */
+    public function getMagazine(): Collection
+    {
+        return $this->magazine;
+    }
+
+    public function addMagazine(Magazine $magazine): self
+    {
+        if (!$this->magazine->contains($magazine)) {
+            $this->magazine[] = $magazine;
+            $magazine->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagazine(Magazine $magazine): self
+    {
+        if ($this->magazine->removeElement($magazine)) {
+            // set the owning side to null (unless already changed)
+            if ($magazine->getClient() === $this) {
+                $magazine->setClient(null);
+            }
+        }
 
         return $this;
     }

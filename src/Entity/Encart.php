@@ -29,7 +29,7 @@ class Encart
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="encart", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $commande;
 
@@ -46,12 +46,6 @@ class Encart
      * @Groups({"commande:read", "postCommandeEncart:write"})
      */
     private $format;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=EditionMagazine::class, inversedBy="encart")
-     * @Groups({"postCommandeEncart:write"})
-     */
-    private $editionMagazine;
 
     public function getId(): ?int
     {
@@ -90,18 +84,6 @@ class Encart
     public function setFormat(?FormatEncart $format): self
     {
         $this->format = $format;
-
-        return $this;
-    }
-
-    public function getEditionMagazine(): ?EditionMagazine
-    {
-        return $this->editionMagazine;
-    }
-
-    public function setEditionMagazine(?EditionMagazine $editionMagazine): self
-    {
-        $this->editionMagazine = $editionMagazine;
 
         return $this;
     }

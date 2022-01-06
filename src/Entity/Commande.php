@@ -62,6 +62,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "groups" => ["commande:read"]
     ],
 )]
+
 #[ApiFilter(DateFilter::class, properties: [ 'debut' => 'exact', "fin" => "exact" ])]
 #[ApiFilter(SearchFilter::class, properties: [ "client" => "exact", ])]
 
@@ -151,7 +152,7 @@ class Commande
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="commandes", fetch="LAZY")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({
      *     "commande:read",
      *     "postCommandeSupportPrint:write",
@@ -426,8 +427,10 @@ class Commande
     public function addHistoriqueClient(HistoriqueClient $historiqueClient): self
     {
         if (!$this->historiqueClients->contains($historiqueClient)) {
-            $this->historiqueClients[] = $historiqueClient;
-            $historiqueClient->setCommande($this);
+            if($historiqueClient->getCommentaire() !== ""){
+                $this->historiqueClients[] = $historiqueClient;
+                $historiqueClient->setCommande($this);
+            }
         }
 
         if(is_null($historiqueClient->getCreatedAt())){
