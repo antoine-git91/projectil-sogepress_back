@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Controller\CommandesByUserController;
 use App\Repository\CommandeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +19,23 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: [
         "get",
+        "getCommandesByUser" => [
+            'pagination_enabled' => false,
+            'path' => '/getCommandesByUser/{id_user}',
+            "controller" => CommandesByUserController::class,
+            'method' => 'get',
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les commandes correspondantes au user',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'id_user',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ]
+        ],
         "post",
         "postCommandeSupportPrint" => [
             "method" => "post",

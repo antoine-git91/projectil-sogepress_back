@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\CommandesByUserController;
 use App\Controller\LoggedInController;
 use App\Controller\UpdatePasswordController;
 use App\Repository\UserRepository;
@@ -41,7 +42,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    #[Groups(["user:read", "historique:read"])]
+    #[Groups([
+        "user:read",
+        "historique:read"
+    ])]
     private $id;
 
     /**
