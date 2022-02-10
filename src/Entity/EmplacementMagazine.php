@@ -11,8 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=EmplacementMagazineRepository::class)
  * @ApiResource(
  *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"emplacement_magazine:read"}},
- *     denormalizationContext={"groups"={"emplacement_magazine:write"}},
  *     collectionOperations = {"get"},
  *     itemOperations = {"get"}
  * )
@@ -23,12 +21,17 @@ class EmplacementMagazine
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({
+     *     "encart:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"commande:read"})
+     * @Groups({
+     *     "encart:read"
+     * })
      */
     private $libelle;
 

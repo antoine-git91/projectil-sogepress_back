@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Commande;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +21,50 @@ class CommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, Commande::class);
     }
 
-    // /**
-    //  * @return Commande[] Returns an array of Commande objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function getCa($user)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT SUM(c.facturation)
+        FROM App\Entity\Commande c
+        WHERE c.user = :user
+        AND SUBSTRING(c.fin,6,2) = SUBSTRING(CURRENT_DATE(), 6,2)'
+        )->setParameter('user', $user);
+
+        return $query->getSingleScalarResult();
+    }
+
+    public function getCaByMonthAndClient($client)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('substring(c.fin, 1,7) AS month, sum(c.facturation) as total')
+            ->where('c.client = :client')
+            ->setParameter('client', $client)
+            ->groupBy('month')
             ->getQuery()
             ->getResult()
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Commande
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+
     }
-    */
+
+
+//    /**
+//     * @throws \Doctrine\ORM\NonUniqueResultException
+//     */
+//    public function findOneBySomeField($value): ?Commande
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
+
 }

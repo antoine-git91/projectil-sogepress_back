@@ -38,19 +38,26 @@ class SupportPrint
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({ "commande:read", "postCommandeSupportPrint:write" })
+     * @Groups({
+     *      "postCommandeSupportPrint:write",
+     *     "support_print:read"
+     * })
      */
     private $quantite;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="supportPrint", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $commande;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypePrint::class, inversedBy="supportPrints")
-     * @Groups({ "commande:read", "postCommandeSupportPrint:write" })
+     * @Groups({
+     *     "postCommandeSupportPrint:write",
+     *     "getCommandesByClient:read",
+     *     "support_print:read"
+     * })
      */
     private $typePrint;
 

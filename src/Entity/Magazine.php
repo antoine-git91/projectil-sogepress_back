@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\MagazinesByClientController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\MagazineRepository;
@@ -12,53 +13,101 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=MagazineRepository::class)
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"magazine:read"}},
- *     denormalizationContext={"groups"={"magazine:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  */
+#[ApiResource(
+    collectionOperations: [
+        "get",
+        "getMagazinesByClient" => [
+            'pagination_enabled' => false,
+            'path' => '/magazinesByClient/{id_client}',
+            "controller" => MagazinesByClientController::class,
+            'method' => 'get',
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les magazines correspondants au client',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'id_client',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ],
+        ],
+        "post"
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "delete"
+    ],
+    attributes: [
+        "security" => "is_granted('ROLE_COMMERCIAL')",
+        "pagination_items_per_page" => 20
+    ],
+    denormalizationContext: ["groups" => ["magazine:write"]],
+    normalizationContext: ["groups" => ["magazine:read"]]
+)]
 class Magazine
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"magazine:read", "client:read"})
+     * @Groups({
+     *     "magazine:read",
+     *     "magazineByClient:read",
+     *     "supportMagazine:read",
+     *     "client:read",
+     *     "encart:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"magazine:read","magazine:write", "client:read"})
+     * @Groups({
+     *     "magazine:read",
+     *     "magazineByClient:read",
+     *     "magazine:write",
+     *     "client:read",
+     *     "getCommandesByClient:read",
+     *     "supportMagazine:read",
+     *     "encart:read"
+     * })
      */
     private $nom;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Client::class, inversedBy="magazine", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"magazine:read","magazine:write"})
-     */
-    private $client;
 
     /**
      * @ORM\OneToMany(targetEntity=Potentialite::class, mappedBy="magazine", cascade={"persist"}, orphanRemoval=true)
-     * @Groups({"magazine:read","magazine:write"})
+     * @Groups({
+     *     "magazine:read",
+     * })
      * @Assert\Valid
      */
     private $potentialites;
 
     /**
-     * @ORM\OneToMany(targetEntity=EditionMagazine::class, mappedBy="magazine", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=SupportMagazine::class, mappedBy="magazine")
      */
-    private $editionMagazines;
+    private $supportMagazine;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="magazine")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Groups({
+     *     "magazine:read",
+     *     "magazine:write",
+     * })
+     */
+    private $client;
+
 
     public function __construct()
     {
         $this->potentialites = new ArrayCollection();
-        $this->editionMagazines = new ArrayCollection();
+        $this->supportMagazine = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,18 +123,6 @@ class Magazine
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(Client $client): self
-    {
-        $this->client = $client;
 
         return $this;
     }
@@ -121,31 +158,43 @@ class Magazine
     }
 
     /**
-     * @return Collection|EditionMagazine[]
+     * @return Collection|SupportMagazine[]
      */
-    public function getEditionMagazines(): Collection
+    public function getSupportMagazine(): Collection
     {
-        return $this->editionMagazines;
+        return $this->supportMagazine;
     }
 
-    public function addEditionMagazine(EditionMagazine $editionMagazine): self
+    public function addSupportMagazine(SupportMagazine $supportMagazine): self
     {
-        if (!$this->editionMagazines->contains($editionMagazine)) {
-            $this->editionMagazines[] = $editionMagazine;
-            $editionMagazine->setMagazine($this);
+        if (!$this->supportMagazine->contains($supportMagazine)) {
+            $this->supportMagazine[] = $supportMagazine;
+            $supportMagazine->setMagazine($this);
         }
 
         return $this;
     }
 
-    public function removeEditionMagazine(EditionMagazine $editionMagazine): self
+    public function removeSupportMagazine(SupportMagazine $supportMagazine): self
     {
-        if ($this->editionMagazines->removeElement($editionMagazine)) {
+        if ($this->supportMagazine->removeElement($supportMagazine)) {
             // set the owning side to null (unless already changed)
-            if ($editionMagazine->getMagazine() === $this) {
-                $editionMagazine->setMagazine(null);
+            if ($supportMagazine->getMagazine() === $this) {
+                $supportMagazine->setMagazine(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
 
         return $this;
     }

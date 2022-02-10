@@ -20,13 +20,16 @@ class CommunityManagement
 
     /**
      * @ORM\Column(type="integer", name="post_mensuel")
-     * @Groups({"postCommandeCommunity:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $postMensuel;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="communityManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $commande;
 

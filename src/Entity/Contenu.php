@@ -20,19 +20,26 @@ class Contenu
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"postCommandeContenu:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeContenu:write"
+     * })
      */
     private $feuillets;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="contenu", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $commande;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeContenu::class, inversedBy="contenus")
-     * @Groups({"postCommandeContenu:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeContenu:write",
+     *     "getCommandesByClient:read"
+     * })
      */
     private $typeContenu;
 

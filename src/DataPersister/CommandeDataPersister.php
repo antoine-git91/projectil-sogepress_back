@@ -46,8 +46,6 @@ class CommandeDataPersister implements ContextAwareDataPersisterInterface
 
     public function remove($data, array $context = [])
     {
-        $supportMag = $data->getSupportMagazine();
-        $supportMag->setCommande(0); //marche pas: must be instance of Commande (sauf que on cherche à supprimer la référence à Commande)
         $this->entityManager->remove($data);
         $this->entityManager->flush();
     }

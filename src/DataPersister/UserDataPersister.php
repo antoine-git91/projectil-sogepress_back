@@ -4,8 +4,10 @@ namespace App\DataPersister;
 
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use DateTime;
 
 class UserDataPersister implements ContextAwareDataPersisterInterface
 {
@@ -33,6 +35,12 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
         if ($data->getPlainPassword() !== null) {
             $password = $this->userPasswordEncoder->hashPassword($data, $data->getPlainPassword());
             $data->setPassword($password);
+        }
+
+        if (is_null($data->getCreatedAt())) {
+            $data->setCreatedAt(new DateTimeImmutable());
+        } else {
+            $data->setUpdatedAt(new DateTime());
         }
 
         $this->entityManager->persist($data);

@@ -55,77 +55,148 @@ class Contact
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"contact:read", "historique:read", "client:read", "contactByClient:read"})
+     * @Groups({
+     *     "contact:read",
+     *     "historique:read",
+     *     "client:read",
+     *     "commande:read",
+     *     "contactByClient:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read", "contactByClient:read"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:read",
+     *     "client:write",
+     *     "commande:read",
+     *     "contactByClient:read"
+     * })
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read", "contactByClient:read"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:read",
+     *     "client:write",
+     *     "commande:read",
+     *     "contactByClient:read",
+     * })
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:read",
+     *     "client:write",
+     *     "commande:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read"
+     * })
      */
     private $fonction;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:read",
+     *     "client:write",
+     *     "commande:read"
+     * })
      * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:read", "client:write", "commande:read"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:read",
+     *     "client:write",
+     *     "commande:read"
+     * })
      */
     private $tel;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"contact:read", "contact:write", "client:write"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:write"
+     * })
      */
     private $defaut;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="contacts")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write"
+     * })
      */
     private $client;
 
     /**
      * @ORM\ManyToMany(targetEntity=Commande::class, mappedBy="contact")
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write"
+     * })
      */
     private $commandes;
 
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="contact")
-     * @Groups({"contact:read", "contact:write"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write"
+     * })
      */
     private $historiqueClients;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
-     * @Groups({"contact:read", "contact:write", "client:write"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:write"
+     * })
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, name="modified_at")
-     * @Groups({"contact:read", "contact:write", "client:write"})
+     * @Groups({
+     *     "contact:read",
+     *     "contact:write",
+     *     "client:write"
+     * })
      */
     private $modifiedAt;
+
+    /**
+     * @Groups({
+     *     "contact:read",
+     *     "contactByClient:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read"
+     * })
+     * */
+    private $fullname;
 
     public function __construct()
     {
@@ -160,6 +231,11 @@ class Contact
         $this->prenom = $prenom;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullname =  $this->nom . " " . $this->prenom;
     }
 
     public function getFonction(): ?string

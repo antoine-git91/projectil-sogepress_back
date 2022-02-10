@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\EncartRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\PseudoTypes\NonEmptyLowercaseString;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -15,7 +16,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "get",
         "post"
     ],
-    itemOperations: ["get"]
+    itemOperations: ["get"],
+    normalizationContext: [ "groups" => ["encart:read"] ]
 )]
 class Encart
 {
@@ -23,35 +25,47 @@ class Encart
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"commande:read"})
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=Commande::class, inversedBy="encart", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @Groups ({
+     *      "getCommandesByClient:read",
+     * })
      */
     private $commande;
 
     /**
      * @ORM\ManyToOne(targetEntity=EmplacementMagazine::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "postCommandeEncart:write"})
+     * @Groups({
+     *     "encart:read",
+     *     "postCommandeEncart:write"
+     * })
      */
     private $emplacement;
 
     /**
      * @ORM\ManyToOne(targetEntity=FormatEncart::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "postCommandeEncart:write"})
+     * @Groups({
+     *     "encart:read",
+     *     "postCommandeEncart:write"
+     * })
      */
     private $format;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EditionMagazine::class, inversedBy="encart")
-     * @Groups({"postCommandeEncart:write"})
+     * @ORM\ManyToOne(targetEntity=SupportMagazine::class, inversedBy="encart")
+     * @Groups({
+     *     "encart:read",
+     *     "postCommandeEncart:write",
+     *     "getCommandesByClient:read"
+     * })
      */
-    private $editionMagazine;
+    private $supportMagazine;
 
     public function getId(): ?int
     {
@@ -94,14 +108,14 @@ class Encart
         return $this;
     }
 
-    public function getEditionMagazine(): ?EditionMagazine
+    public function getSupportMagazine(): ?SupportMagazine
     {
-        return $this->editionMagazine;
+        return $this->supportMagazine;
     }
 
-    public function setEditionMagazine(?EditionMagazine $editionMagazine): self
+    public function setSupportMagazine(?SupportMagazine $supportMagazine): self
     {
-        $this->editionMagazine = $editionMagazine;
+        $this->supportMagazine = $supportMagazine;
 
         return $this;
     }
