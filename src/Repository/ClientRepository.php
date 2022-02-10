@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @method Client|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,21 @@ class ClientRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Client::class);
+    }
+
+    public function getClientsMonth($user)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT COUNT(c.id)
+            FROM App\Entity\Client c
+            WHERE c.user = :user
+            AND SUBSTRING(c.createdAt, 1,8) = SUBSTRING(CURRENT_DATE(), 1,8)'
+        )->setParameter('user', $user);
+
+        // returns an array of Product objects
+        return $query->getSingleScalarResult();
     }
 
     // /**

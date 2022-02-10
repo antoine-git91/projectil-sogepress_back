@@ -20,7 +20,10 @@ class CommunityManagement
 
     /**
      * @ORM\Column(type="integer", name="post_mensuel")
-     * @Groups({"postCommandeCommunity:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeCommunity:write"
+     * })
      */
     private $postMensuel;
 

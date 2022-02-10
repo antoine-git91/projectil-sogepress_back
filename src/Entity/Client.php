@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\GetNumberClientCurrentMonthByUserController;
+use App\Controller\GetPotentialCustomersController;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\PersistentCollection;
@@ -18,7 +20,26 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ApiResource(
     collectionOperations: [
-        "get",
+        "get" =>[
+        "pagination_items_per_page" => 20,
+        ],
+        "getNumberClientCurrentMonthByUser" => [
+            "pagination_enabled" => false,
+            "method" => "get",
+            "controller" => GetNumberClientCurrentMonthByUserController::class,
+            "path" => '/getNumberClientCurrentMonth/{id_user}',
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les commandes correspondantes au user connecté',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'id_user',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ]
+        ],
         "post"
     ],
     itemOperations: [
@@ -26,10 +47,9 @@ use Doctrine\ORM\Mapping as ORM;
         "put",
         "patch",
         "delete"
-    ] ,
+    ],
     attributes: [
-        "security"=>"is_granted('ROLE_COMMERCIAL')",
-        "pagination_items_per_page" => 20
+        "security"=>"is_granted('ROLE_COMMERCIAL')"
     ],
     denormalizationContext: ["groups" => ["client:write"]],
     normalizationContext: ["groups" => ["client:read"]]
@@ -49,9 +69,9 @@ class Client
      *     "potentialite:read",
      *     "magazine:read",
      *     "historique:read",
-     *     "relance:write",
-     *     "commande:read",
+     *     "relance:read",
      *     "magazine:read",
+     *     "getPotentialCustomers:read"
      * })
      */
     private $id;
@@ -62,8 +82,14 @@ class Client
      *     "client:read",
      *     "client:write",
      *     "adresse:read",
-     *     "commande:read",
+     *     "commandes:read",
      *     "magazine:read",
+     *     "relance:read",
+     *     "getRelancesByUser:read",
+     *     "getRelancesByCommande:read",
+     *     "getRelancesByCommande:read",
+     *     "getRelancesByClient:read",
+     *     "getPotentialCustomers:read"
      * })
      */
     private $raisonSociale;
@@ -72,7 +98,7 @@ class Client
      * @ORM\Column(type="boolean")
      * @Groups({
      *     "client:read",
-     *     "client:write"
+     *     "client:write",
      * })
      */
     private $statut;
@@ -83,7 +109,8 @@ class Client
      *     "client:read",
      *     "client:write",
      *     "adresse:read",
-     *     "commande:read"
+     *     "relance:read",
+     *     "getPotentialCustomers:read"
      * })
      * @Assert\Email
      */
@@ -128,8 +155,8 @@ class Client
      * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="client",cascade={"persist"}, fetch="LAZY", orphanRemoval=true)
      * @Groups({
      *     "client:read",
-     *     "commande:read",
-     *     "client:write"
+     *     "client:write",
+     *     "getPotentialCustomers:read"
      * })
      */
     private $adresse;
@@ -165,18 +192,13 @@ class Client
     /**
      * @ORM\OneToMany(targetEntity=HistoriqueClient::class, mappedBy="client", orphanRemoval=true)
      * @Groups({
-     *     "client:read",
-     *     "client:write"
+     *     "client:read"
      * })
      */
     private Collection $historiqueClients;
 
     /**
      * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="client")
-     * @Groups({
-     *     "client:read",
-     *     "client:write"
-     * })
      */
     private $relances;
 
@@ -185,7 +207,7 @@ class Client
      * @ORM\JoinColumn(nullable=false)
      * @Groups({
      *     "client:read",
-     *     "client:write"
+     *     "client:write",
      * })
      */
     private $nafSousClasse;
@@ -194,15 +216,28 @@ class Client
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({
      *     "client:read",
-     *     "client:write"
+     *     "client:write",
+     *     "getPotentialCustomers:read"
      * })
      */
     private $telephone;
 
     /**
      * @ORM\OneToMany(targetEntity=Magazine::class, mappedBy="client")
+     * @Groups({
+     *     "client:write",
+     * })
      */
     private $magazine;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="client")
+     * @Groups({
+     *     "client:read",
+     *     "client:write",
+     * })
+     */
+    private $user;
 
     public function __construct()
     {
@@ -534,6 +569,18 @@ class Client
                 $magazine->setClient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

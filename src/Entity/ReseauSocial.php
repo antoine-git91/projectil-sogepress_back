@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReseauSocialRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReseauSocialRepository::class)
@@ -19,6 +20,9 @@ class ReseauSocial
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({
+     *      "getCommandesByClient:read"
+     * })
      */
     private $libelle;
 

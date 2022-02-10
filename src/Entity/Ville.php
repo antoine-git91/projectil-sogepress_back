@@ -48,19 +48,35 @@ class Ville
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"ville:read", "adresse:read", "client:read"})
+     * @Groups({
+     *     "ville:read",
+     *     "adresse:read",
+     *     "client:read"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"ville:read", "adresse:read", "client:read"})
+     * @Groups({"
+     *   ville:read",
+     *   "adresse:read",
+     *   "client:read",
+     *   "commande:read",
+     *   "getPotentialCustomers:read"
+     * })
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=5, name="code_postal")
-     * @Groups({"ville:read", "adresse:read", "client:read"})
+     * @Groups({
+     *     "ville:read",
+     *     "adresse:read",
+     *     "client:read",
+     *     "commande:read",
+     *     "getPotentialCustomers:read"
+     * })
      */
     private $codePostal;
 

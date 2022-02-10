@@ -20,7 +20,10 @@ class Contenu
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"postCommandeContenu:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeContenu:write"
+     * })
      */
     private $feuillets;
 
@@ -32,7 +35,11 @@ class Contenu
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeContenu::class, inversedBy="contenus")
-     * @Groups({"postCommandeContenu:write"})
+     * @Groups({
+     *     "commande:read",
+     *     "postCommandeContenu:write",
+     *     "getCommandesByClient:read"
+     * })
      */
     private $typeContenu;
 

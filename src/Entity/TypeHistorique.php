@@ -27,7 +27,12 @@ class TypeHistorique
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"client:read", "commande:read", "historique:read"})
+     * @Groups({
+     *     "client:read",
+     *     "commande:read",
+     *     "historique:read",
+     *     "getHistoriquesByClient:read"
+     * })
      */
     private $libelle;
 

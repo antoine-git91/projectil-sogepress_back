@@ -3,20 +3,63 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\GetHistoriquesByClientController;
+use App\Controller\GetHistoriquesByCommandeController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\HistoriqueClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=HistoriqueClientRepository::class)
- *  * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"historique:read"}},
- *     denormalizationContext={"groups"={"historique:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  */
+#[ ApiResource(
+    collectionOperations: [
+        "get",
+        "getHistoriquesByClient" => [
+            "method" => "GET",
+            "controller" => GetHistoriquesByClientController::class,
+            "path" => "getHistoriquesByClient/{id_client}",
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les historiques correspondants au client',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'id_client',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ],
+            "normalization_context" => ["groups" => ["getHistoriquesByClient:read"]]
+        ],
+        "getHistoriquesByCommande" => [
+            "method" => "GET",
+            "controller" => GetHistoriquesByCommandeController::class,
+            "path" => "getHistoriquesByCommande/{id_commande}",
+            'read' => false,
+            'openapi_context' => [
+                'summary' => 'Récupère les historiques correspondants à la commande',
+                'parameters' => [
+                    ['in' => 'path',
+                        'name' => 'id_commande',
+                        'schema' => [
+                            'type' => 'integer']
+                    ]
+                ]
+            ],
+            "normalization_context" => ["groups" => ["getHistoriquesByCommande:read"]]
+        ],
+        "post"
+    ],
+    itemOperations: [
+        "get",
+        "put",
+        "delete"
+    ],
+    attributes: ["security"=> "is_granted('ROLE_COMMERCIAL')"],
+    denormalizationContext: ["groups"=> ["historique:write"]],
+    normalizationContext: ["groups"=> ["historique:read"]]
+)]
 class HistoriqueClient
 {
     /**
@@ -25,8 +68,9 @@ class HistoriqueClient
      * @ORM\Column(type="integer")
      * @Groups({
      *     "historique:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read",
      *     "contact:read",
-     *     "client:read",
      *     "user:read"
      * })
      */
@@ -36,8 +80,11 @@ class HistoriqueClient
      * @ORM\Column(type="text")
      * @Groups({
      *     "historique:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read",
      *     "historique:write",
      *     "commande:read",
+     *     "client:write",
      *     "postCommandeSupportPrint:write",
      *     "postCommandeSupportWeb:write",
      *     "postCommandeSupportMagazine:write",
@@ -52,6 +99,8 @@ class HistoriqueClient
      * @ORM\Column(type="datetime_immutable", name="created_at")
      * @Groups({
      *     "historique:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read",
      *     "historique:write"
      * })
      */
@@ -79,14 +128,16 @@ class HistoriqueClient
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      * @Groups({
      *     "historique:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read",
      *     "historique:write",
-     *     "client:read",
      *     "postCommandeSupportPrint:write",
      *     "postCommandeSupportWeb:write",
      *     "postCommandeSupportMagazine:write",
      *     "postCommandeContenu:write",
      *     "postCommandeEncart:write",
-     *     "postCommandeCommunity:write"
+     *     "postCommandeCommunity:write",
+     *     "client:write"
      * })
      */
     private $contact;
@@ -110,7 +161,10 @@ class HistoriqueClient
     /**
      * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="historiqueClients")
      * @ORM\JoinColumn(onDelete="CASCADE")
-     * @Groups({"historique:read", "historique:write"})
+     * @Groups({
+     *     "historique:read",
+     *     "historique:write"
+     * })
      */
     private $commande;
 
@@ -119,8 +173,11 @@ class HistoriqueClient
      * @ORM\JoinColumn(nullable=true)
      * @Groups({
      *     "historique:read",
+     *     "getHistoriquesByClient:read",
+     *     "getHistoriquesByCommande:read",
      *     "historique:write",
-     *     "commande:read"
+     *     "commande:read",
+     *     "client:write"
      * })
      */
     private $typeHistorique;

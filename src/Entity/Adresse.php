@@ -49,7 +49,8 @@ class Adresse
      *     "adresse:read",
      *     "adresse:write",
      *     "client:read",
-     *     "client:write"
+     *     "client:write",
+     *     "commande:read"
      * })
      */
     private $numero;
@@ -60,7 +61,8 @@ class Adresse
      *     "adresse:read",
      *     "adresse:write",
      *     "client:read",
-     *     "client:write"
+     *     "client:write",
+     *     "commande:read"
      * })
      */
     private $typeVoie;
@@ -72,7 +74,8 @@ class Adresse
      *     "adresse:read",
      *     "adresse:write",
      *     "client:read",
-     *     "client:write"
+     *     "client:write",
+     *     "commande:read"
      * })
      */
     private $nomVoie;
@@ -84,7 +87,9 @@ class Adresse
      *     "adresse:read",
      *     "client:read",
      *     "adresse:write",
-     *     "client:write"
+     *     "client:write",
+     *     "commande:read",
+     *     "getPotentialCustomers:read"
      * })
      */
     private $ville;

@@ -30,7 +30,11 @@ class NafSousClasses
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"naf_sous_classe:read", "client:read"})
+     * @Groups({
+     *     "naf_sous_classe:read",
+     *     "client:read",
+     *     "commande:read"
+     * })
      */
     private $libelle;
 

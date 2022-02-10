@@ -13,13 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=MagazineRepository::class)
- * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_COMMERCIAL')"},
- *     normalizationContext={"groups"={"magazine:read"}},
- *     denormalizationContext={"groups"={"magazine:write"}},
- *     collectionOperations = {"get", "post"},
- *     itemOperations = {"get", "put", "delete"}
- * )
  */
 #[ApiResource(
     collectionOperations: [
@@ -39,8 +32,7 @@ use Doctrine\ORM\Mapping as ORM;
                             'type' => 'integer']
                     ]
                 ]
-            ]
-
+            ],
         ],
         "post"
     ],
@@ -49,7 +41,10 @@ use Doctrine\ORM\Mapping as ORM;
         "put",
         "delete"
     ],
-    attributes: ["security" => "is_granted('ROLE_COMMERCIAL')"],
+    attributes: [
+        "security" => "is_granted('ROLE_COMMERCIAL')",
+        "pagination_items_per_page" => 20
+    ],
     denormalizationContext: ["groups" => ["magazine:write"]],
     normalizationContext: ["groups" => ["magazine:read"]]
 )]
@@ -61,7 +56,10 @@ class Magazine
      * @ORM\Column(type="integer")
      * @Groups({
      *     "magazine:read",
-     *     "client:read"
+     *     "magazineByClient:read",
+     *     "supportMagazine:read",
+     *     "client:read",
+     *     "encart:read"
      * })
      */
     private $id;
@@ -70,8 +68,12 @@ class Magazine
      * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "magazine:read",
+     *     "magazineByClient:read",
      *     "magazine:write",
-     *     "client:read"
+     *     "client:read",
+     *     "getCommandesByClient:read",
+     *     "supportMagazine:read",
+     *     "encart:read"
      * })
      */
     private $nom;

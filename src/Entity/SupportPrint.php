@@ -38,7 +38,10 @@ class SupportPrint
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({ "commande:read", "postCommandeSupportPrint:write" })
+     * @Groups({
+     *      "postCommandeSupportPrint:write",
+     *     "support_print:read"
+     * })
      */
     private $quantite;
 
@@ -50,7 +53,11 @@ class SupportPrint
 
     /**
      * @ORM\ManyToOne(targetEntity=TypePrint::class, inversedBy="supportPrints")
-     * @Groups({ "commande:read", "postCommandeSupportPrint:write" })
+     * @Groups({
+     *     "postCommandeSupportPrint:write",
+     *     "getCommandesByClient:read",
+     *     "support_print:read"
+     * })
      */
     private $typePrint;
 

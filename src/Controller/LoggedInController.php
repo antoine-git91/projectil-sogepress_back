@@ -16,8 +16,7 @@ class LoggedInController extends AbstractController
 
     public function __invoke()
     {
-        $user = $this->security->getUser();
-        return $user;
+        return $this->security->getUser();
     }
 
 }

@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use App\Controller\CommandesByUserController;
 use App\Controller\LoggedInController;
-use App\Controller\UpdatePasswordController;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,7 +27,15 @@ use Symfony\Component\Validator\Constraints as Assert;
             'method' => 'get',
             'controller' => LoggedInController::class,
             'read'=> false
-        ],
+        ]
+    ],
+    itemOperations: [
+        "get",
+        "patch",
+        "delete"
+    ],
+    attributes: [
+    "security"=>"is_granted('ROLE_COMMERCIAL')"
     ],
     denormalizationContext: ['groups' => 'user:write'],
     normalizationContext: ['groups' => 'user:read']
@@ -109,10 +115,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["user:read","user:write"])]
     private $historiqueClients;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    #[Groups(["user:read","user:write"])]
+    private $telephone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Client::class, mappedBy="user")
+     */
+    private $client;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Relance::class, mappedBy="user")
+     */
+    private $relance;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->commandes = new ArrayCollection();
         $this->historiqueClients = new ArrayCollection();
+        $this->client = new ArrayCollection();
+        $this->relance = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -320,6 +349,90 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $historiqueClient->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Client[]
+     */
+    public function getClient(): Collection
+    {
+        return $this->client;
+    }
+
+    public function addClient(Client $client): self
+    {
+        if (!$this->client->contains($client)) {
+            $this->client[] = $client;
+            $client->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): self
+    {
+        if ($this->client->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getUser() === $this) {
+                $client->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Relance[]
+     */
+    public function getRelance(): Collection
+    {
+        return $this->relance;
+    }
+
+    public function addRelance(Relance $relance): self
+    {
+        if (!$this->relance->contains($relance)) {
+            $this->relance[] = $relance;
+            $relance->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelance(Relance $relance): self
+    {
+        if ($this->relance->removeElement($relance)) {
+            // set the owning side to null (unless already changed)
+            if ($relance->getUser() === $this) {
+                $relance->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

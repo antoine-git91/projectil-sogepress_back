@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TypeSiteWebRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=TypeSiteWebRepository::class)
@@ -24,6 +25,10 @@ class TypeSiteWeb
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({
+     *     "getCommandesByClient:read",
+     *     "supportWeb:read"
+     * })
      */
     private $libelle;
 

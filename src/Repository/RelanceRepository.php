@@ -19,22 +19,34 @@ class RelanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Relance::class);
     }
 
-    // /**
-    //  * @return Relance[] Returns an array of Relance objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Relance[] Returns an array of Relance objects
+     */
+    public function getRelancesValidByClient($client)
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('r.client = :client')
+            ->setParameter('client', $client)
+            ->andWhere('r.status = 1')
+            ->orderBy('r.dateEcheance', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    /**
+     * @return Relance[] Returns an array of Relance objects
+     */
+    public function getRelancesValidByCommande($commande)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.commande = :commande')
+            ->setParameter('commande', $commande)
+            ->andWhere('r.status = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Relance

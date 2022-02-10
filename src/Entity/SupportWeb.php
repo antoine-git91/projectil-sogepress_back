@@ -19,7 +19,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     attributes: [
         "security"=>"is_granted('ROLE_COMMERCIAL')"
-    ]
+    ],
+    normalizationContext: ["groups" => ["supportWeb:read"]]
 )]
 class SupportWeb
 {
@@ -27,13 +28,15 @@ class SupportWeb
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"commande:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"commande:read", "postCommandeSupportWeb:write"})
+     * @Groups({
+     *     "supportWeb:read",
+     *     "postCommandeSupportWeb:write"
+     * })
      */
     private $url;
 
@@ -46,16 +49,34 @@ class SupportWeb
     /**
      * @ORM\ManyToOne(targetEntity=TypePrestationWeb::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "postCommandeSupportWeb:write"})
+     * @Groups({
+     *     "supportWeb:read",
+     *     "postCommandeSupportWeb:write",
+     *     "getCommandesByClient:read"
+     * })
      */
     private $typePrestation;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeSiteWeb::class)
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"commande:read", "postCommandeSupportWeb:write"})
+     * @Groups({
+     *     "supportWeb:read",
+     *     "postCommandeSupportWeb:write",
+     *     "getCommandesByClient:read"
+     * })
      */
     private $typeSite;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *  @Groups({
+     *    "supportWeb:read",
+     *    "postCommandeSupportWeb:write",
+     *    "getCommandesByClient:read"
+     * })
+     */
+    private $server;
 
     public function getId(): ?int
     {
@@ -106,6 +127,18 @@ class SupportWeb
     public function setTypeSite(?TypeSiteWeb $typeSite): self
     {
         $this->typeSite = $typeSite;
+
+        return $this;
+    }
+
+    public function getServer(): ?string
+    {
+        return $this->server;
+    }
+
+    public function setServer(?string $server): self
+    {
+        $this->server = $server;
 
         return $this;
     }
